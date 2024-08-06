@@ -1,6 +1,6 @@
 # Apps Interactivas (backend)
 
-**Repositorio Frontend:** https://github.com/MatiasUrielGluck/
+**Repositorio Frontend:** https://github.com/17sTomy/fe-apps-int
 
 Desarrollo del trabajo práctico de la materia Aplicaciones Interactivas, de la carrera Ingeniería Informática, UADE.
 
