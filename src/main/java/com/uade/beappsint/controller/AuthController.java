@@ -1,5 +1,7 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.auth.LoginRequestDTO;
+import com.uade.beappsint.dto.auth.LoginResponseDTO;
 import com.uade.beappsint.dto.auth.SignupRequestDTO;
 import com.uade.beappsint.dto.auth.SignupResponseDTO;
 import com.uade.beappsint.service.AuthService;
@@ -28,8 +30,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String privateEndpointTest() {
-        return "You should not be seeing this...";
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Validated LoginRequestDTO loginRequestDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.login(loginRequestDTO));
     }
 
     @PostMapping("/test")
