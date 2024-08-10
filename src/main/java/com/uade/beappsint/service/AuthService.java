@@ -33,6 +33,7 @@ public class AuthService {
         Customer newUser = Customer.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .kycCompleted(false)
                 .build();
 
         customerRepository.save(newUser);

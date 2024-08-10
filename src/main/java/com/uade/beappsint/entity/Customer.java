@@ -38,6 +38,9 @@ public class Customer implements UserDetails {
     @Column(name = "dob")
     private LocalDate dateOfBirth;
 
+    @Column(name = "kycCompleted", columnDefinition = "boolean default false")
+    private boolean kycCompleted;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
