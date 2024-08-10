@@ -1,17 +1,11 @@
 package com.uade.beappsint.controller;
 
-import com.uade.beappsint.dto.auth.LoginRequestDTO;
-import com.uade.beappsint.dto.auth.LoginResponseDTO;
-import com.uade.beappsint.dto.auth.SignupRequestDTO;
-import com.uade.beappsint.dto.auth.SignupResponseDTO;
+import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.service.AuthService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/auth")
 @RestController
@@ -34,6 +28,13 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.login(loginRequestDTO));
+    }
+
+    @GetMapping("/info")
+    public ResponseEntity<CustomerInfoDTO> customerInfo() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.getCustomerInfo());
     }
 
     @PostMapping("/test")

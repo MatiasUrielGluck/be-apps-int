@@ -1,15 +1,14 @@
 package com.uade.beappsint.service;
 
-import com.uade.beappsint.dto.auth.LoginRequestDTO;
-import com.uade.beappsint.dto.auth.LoginResponseDTO;
-import com.uade.beappsint.dto.auth.SignupRequestDTO;
-import com.uade.beappsint.dto.auth.SignupResponseDTO;
+import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.UserAlreadyExistsException;
 import com.uade.beappsint.repository.CustomerRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -59,5 +58,14 @@ public class AuthService {
                 .token(jwtToken)
                 .expiresIn(jwtService.getExpirationTime())
                 .build();
+    }
+
+    public Customer getAuthenticatedCustomer() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (Customer) authentication.getPrincipal();
+    }
+
+    public CustomerInfoDTO getCustomerInfo() {
+        return getAuthenticatedCustomer().toDto();
     }
 }
