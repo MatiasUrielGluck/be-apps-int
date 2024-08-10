@@ -1,5 +1,6 @@
 package com.uade.beappsint.entity;
 
+import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,8 +23,8 @@ public class Customer implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "firstname")
+    private String firstname;
 
     @Column(name = "lastname")
     private String lastname;
@@ -65,5 +66,15 @@ public class Customer implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public CustomerInfoDTO toDto() {
+        return CustomerInfoDTO.builder()
+                .id(this.id)
+                .email(this.email)
+                .firstname(this.firstname)
+                .lastname(this.lastname)
+                .dateOfBirth(this.dateOfBirth)
+                .build();
     }
 }
