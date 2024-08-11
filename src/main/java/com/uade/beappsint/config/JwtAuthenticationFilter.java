@@ -1,7 +1,9 @@
 package com.uade.beappsint.config;
 
 import com.uade.beappsint.exception.GenericException;
+import com.uade.beappsint.exception.JwtFilterException;
 import com.uade.beappsint.service.JwtService;
+import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -73,6 +75,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (Exception exception) {
             logger.warn(exception);
+            if (exception.getClass() == MalformedJwtException.class) {
+                handlerExceptionResolver.resolveException(request, response, null, new JwtFilterException("Invalid token."));
+            }
             handlerExceptionResolver.resolveException(request, response, null, new GenericException("Error: ", exception));
         }
     }
