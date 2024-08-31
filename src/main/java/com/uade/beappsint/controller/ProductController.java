@@ -19,22 +19,22 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Product>> getAllProducts() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
         return ResponseEntity.ok(productService.getProductById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
         return ResponseEntity.ok(productService.updateProduct(id, productDetails));
     }
 
@@ -45,7 +45,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}/view")
-    public ResponseEntity<Product> viewProduct(@PathVariable Long id) {
+    public ResponseEntity<Void> viewProduct(@PathVariable Long id) {
         productService.viewProduct(id);
         return ResponseEntity.noContent().build();
     }

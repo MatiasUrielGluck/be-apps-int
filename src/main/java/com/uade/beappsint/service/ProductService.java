@@ -23,27 +23,33 @@ public class ProductService {
         this.authService = authService;
     }
 
-    public List<Product> getAllProducts() {
-        return (List<Product>) productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll()
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
     }
 
-    public Product getProductById(Long id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    public ProductDTO getProductById(Long id) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return product.toDTO();
     }
 
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public ProductDTO createProduct(Product product) {
+        Product savedProduct = productRepository.save(product);
+        return savedProduct.toDTO();
     }
 
-    public Product updateProduct(Long id, Product productDetails) {
-        Product product = getProductById(id);
+    public ProductDTO updateProduct(Long id, Product productDetails) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
         product.setStock(productDetails.getStock());
         product.setPrice(productDetails.getPrice());
         product.setCategory(productDetails.getCategory());
         product.setImageUrl(productDetails.getImageUrl());
-        return productRepository.save(product);
+        Product updatedProduct = productRepository.save(product);
+        return updatedProduct.toDTO();
     }
 
     public void deleteProduct(Long id) {
