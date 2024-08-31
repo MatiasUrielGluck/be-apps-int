@@ -1,5 +1,6 @@
 package com.uade.beappsint.entity;
 
+import com.uade.beappsint.dto.ProductDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,4 +35,19 @@ public class Product {
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @Column(name = "views")
+    private int views;
+
+    public ProductDTO toDTO() {
+        return ProductDTO.builder()
+                .id(this.id)
+                .name(this.name)
+                .description(this.description)
+                .stock(this.stock)
+                .price(this.price)
+                .category(this.category)
+                .imageUrl(this.imageUrl)
+                .build();
+    }
 }
