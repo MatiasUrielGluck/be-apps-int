@@ -48,12 +48,15 @@ public class Customer implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> recentlyViewedProducts;
+  
+    @Column(name = "is-admin", columnDefinition = "boolean default false")
+    private boolean isAdmin;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
-
+  
     @Override
     public String getUsername() {
         return email;
@@ -86,6 +89,7 @@ public class Customer implements UserDetails {
                 .firstname(this.firstname)
                 .lastname(this.lastname)
                 .dateOfBirth(this.dateOfBirth)
+                .isAdmin(this.isAdmin)
                 .build();
     }
 }
