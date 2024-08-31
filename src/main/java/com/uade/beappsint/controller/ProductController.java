@@ -67,4 +67,22 @@ public class ProductController {
         List<ProductDTO> recentlyViewedProducts = productService.getRecentlyViewedProducts();
         return ResponseEntity.ok(recentlyViewedProducts);
     }
+
+    @PostMapping("/{id}/favorite")
+    public ResponseEntity<Void> addProductToFavorites(@PathVariable Long id) {
+        productService.addProductToFavorites(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{id}/favorite")
+    public ResponseEntity<Void> removeProductFromFavorites(@PathVariable Long id) {
+        productService.removeProductFromFavorites(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<ProductDTO>> getFavoritesProducts() {
+        List<ProductDTO> favoriteProducts = productService.getFavoriteProducts();
+        return ResponseEntity.ok(favoriteProducts);
+    }
 }
