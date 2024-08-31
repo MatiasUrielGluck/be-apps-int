@@ -34,6 +34,7 @@ public class AuthService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .kycCompleted(false)
+                .isAdmin(false)
                 .build();
 
         customerRepository.save(newUser);
