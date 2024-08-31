@@ -41,6 +41,14 @@ public class Customer implements UserDetails {
     @Column(name = "kycCompleted", columnDefinition = "boolean default false")
     private boolean kycCompleted;
 
+    @ManyToMany
+    @JoinTable(
+            name = "customer_recently_viewed",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> recentlyViewedProducts;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
