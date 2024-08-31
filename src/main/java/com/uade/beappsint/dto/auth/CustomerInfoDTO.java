@@ -13,4 +13,5 @@ public class CustomerInfoDTO {
     private String  firstname;
     private String  lastname;
     private LocalDate dateOfBirth;
+    private Boolean isAdmin;
 }

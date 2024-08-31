@@ -41,6 +41,9 @@ public class Customer implements UserDetails {
     @Column(name = "kycCompleted", columnDefinition = "boolean default false")
     private boolean kycCompleted;
 
+    @Column(name = "is-admin", columnDefinition = "boolean default false")
+    private boolean isAdmin;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -78,6 +81,7 @@ public class Customer implements UserDetails {
                 .firstname(this.firstname)
                 .lastname(this.lastname)
                 .dateOfBirth(this.dateOfBirth)
+                .isAdmin(this.isAdmin)
                 .build();
     }
 }
