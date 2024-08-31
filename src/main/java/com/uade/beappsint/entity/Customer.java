@@ -41,6 +41,14 @@ public class Customer implements UserDetails {
     @Column(name = "kycCompleted", columnDefinition = "boolean default false")
     private boolean kycCompleted;
 
+    @ManyToMany
+    @JoinTable(
+            name = "customer_recently_viewed",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> recentlyViewedProducts;
+  
     @Column(name = "is-admin", columnDefinition = "boolean default false")
     private boolean isAdmin;
 
@@ -48,7 +56,7 @@ public class Customer implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
-
+  
     @Override
     public String getUsername() {
         return email;
