@@ -88,4 +88,32 @@ public class ProductService {
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
     }
+
+    public void addProductToFavorites(Long productId) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (!customer.getFavoriteProducts().contains(product)) {
+            customer.getFavoriteProducts().add(product);
+            customerRepository.save(customer);
+        }
+    }
+
+    public void removeProductFromFavorites(Long productId) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (customer.getFavoriteProducts().contains(product)) {
+            customer.getFavoriteProducts().remove(product);
+            customerRepository.save(customer);
+        }
+    }
+
+    public List<ProductDTO> getFavoriteProducts() {
+        Customer customer = authService.getAuthenticatedCustomer();
+        return customer.getFavoriteProducts()
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
 }

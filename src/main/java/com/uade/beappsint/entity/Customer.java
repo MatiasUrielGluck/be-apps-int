@@ -48,6 +48,14 @@ public class Customer implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> recentlyViewedProducts;
+
+    @ManyToMany
+    @JoinTable(
+            name = "customer_favorite_products",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> favoriteProducts;
   
     @Column(name = "is-admin", columnDefinition = "boolean default false")
     private boolean isAdmin;
