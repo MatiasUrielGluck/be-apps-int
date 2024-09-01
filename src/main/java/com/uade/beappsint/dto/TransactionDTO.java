@@ -8,6 +8,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 public class TransactionDTO {
-    private String cart; // Cambiar según la implementación de la clase Cart
+    private String cart; 
     private Date date;
 }
