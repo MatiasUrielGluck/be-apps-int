@@ -64,7 +64,12 @@ public class Customer implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
-  
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
     @Override
     public String getUsername() {
         return email;
@@ -90,6 +95,10 @@ public class Customer implements UserDetails {
         return true;
     }
 
+    public boolean getAdminStatus() {
+        return isAdmin;
+    }
+
     public CustomerInfoDTO toDto() {
         return CustomerInfoDTO.builder()
                 .id(this.id)
@@ -100,4 +109,5 @@ public class Customer implements UserDetails {
                 .isAdmin(this.isAdmin)
                 .build();
     }
+
 }

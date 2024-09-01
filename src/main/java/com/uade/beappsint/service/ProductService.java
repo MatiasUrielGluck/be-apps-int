@@ -36,11 +36,13 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(Product product) {
+        assertAdmin();
         Product savedProduct = productRepository.save(product);
         return savedProduct.toDTO();
     }
 
     public ProductDTO updateProduct(Long id, Product productDetails) {
+        assertAdmin();
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
@@ -48,11 +50,24 @@ public class ProductService {
         product.setPrice(productDetails.getPrice());
         product.setCategory(productDetails.getCategory());
         product.setImageUrl(productDetails.getImageUrl());
+        product.setYear(productDetails.getYear());
+        product.setDirector(productDetails.getDirector());
+        product.setCreatedBy(productDetails.getCreatedBy());
         Product updatedProduct = productRepository.save(product);
         return updatedProduct.toDTO();
     }
 
+    public void updateProductStock(Long id, int newStock) {
+        Customer customer = assertAdmin();
+        isProductCreator(id, customer);
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setStock(newStock);
+        productRepository.save(product);
+    }
+
     public void deleteProduct(Long id) {
+        Customer customer = assertAdmin();
+        isProductCreator(id, customer);
         productRepository.deleteById(id);
     }
 
@@ -115,5 +130,29 @@ public class ProductService {
                 .stream()
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> searchProductsByName(String keyword) {
+        return productRepository.findByNameContaining(keyword)
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    private Customer assertAdmin() {
+        Customer customer = authService.getAuthenticatedCustomer();
+        if (!customer.getAdminStatus()) {
+            throw new RuntimeException("Access denied: only administrators can perform this action.");
+        }
+        return customer;
+    }
+
+    private void isProductCreator(Long productId, Customer customer) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        if (!product.getCreatedBy().equals(customer)) {
+            throw new RuntimeException("Access denied: you are not the creator of this product.");
+        }
     }
 }

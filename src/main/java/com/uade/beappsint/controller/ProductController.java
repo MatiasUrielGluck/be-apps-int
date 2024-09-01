@@ -85,4 +85,10 @@ public class ProductController {
         List<ProductDTO> favoriteProducts = productService.getFavoriteProducts();
         return ResponseEntity.ok(favoriteProducts);
     }
+
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<List<ProductDTO>> searchProductsByName(@PathVariable String keyword) {
+        List<ProductDTO> products = productService.searchProductsByName(keyword);
+        return ResponseEntity.ok(products);
+    }
 }

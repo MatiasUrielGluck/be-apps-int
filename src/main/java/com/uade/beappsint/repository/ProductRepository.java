@@ -11,4 +11,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     List<Product> findAll();
     List<Product> findByCategory(String category);
     List<Product> findTop10ByOrderByViewsDesc();
+    List<Product> findByNameContaining(String keyword);
+    void deleteById(Long id);
 }
