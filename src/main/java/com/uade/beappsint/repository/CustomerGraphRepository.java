@@ -7,9 +7,7 @@ import org.springframework.data.neo4j.repository.query.Query;
 import java.util.List;
 
 public interface CustomerGraphRepository extends Neo4jRepository<Customer, Long> {
-
-    Customer findByEmailInGraph(String email);
-
+    //Customer findByEmail(String email);
     @Query("MATCH (c:Client) RETURN c")
     List<Customer> findAllClientsInGraph();
 
