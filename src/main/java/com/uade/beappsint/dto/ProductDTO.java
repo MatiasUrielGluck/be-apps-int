@@ -13,5 +13,7 @@ public class ProductDTO {
     private double price;
     private String category;
     private String imageUrl;
+    private int year;
+    private String director;
 }
 

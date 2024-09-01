@@ -39,6 +39,12 @@ public class Product {
     @Column(name = "views")
     private int views;
 
+    @Column(name = "year")
+    private int year;
+
+    @Column(name = "director")
+    private String director;
+
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .id(this.id)
@@ -48,6 +54,8 @@ public class Product {
                 .price(this.price)
                 .category(this.category)
                 .imageUrl(this.imageUrl)
+                .year(this.year)
+                .director(this.director)
                 .build();
     }
 }
