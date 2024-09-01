@@ -15,5 +15,6 @@ public class ProductDTO {
     private String imageUrl;
     private int year;
     private String director;
+    private String createdByEmail;
 }
 

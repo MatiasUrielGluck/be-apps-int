@@ -45,6 +45,10 @@ public class Product {
     @Column(name = "director")
     private String director;
 
+    @ManyToOne
+    @JoinColumn(name = "created_by")
+    private Customer createdBy;
+
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .id(this.id)
@@ -56,6 +60,7 @@ public class Product {
                 .imageUrl(this.imageUrl)
                 .year(this.year)
                 .director(this.director)
+                .createdByEmail(this.createdBy.getEmail())
                 .build();
     }
 }
