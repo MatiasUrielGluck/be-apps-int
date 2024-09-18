@@ -41,7 +41,10 @@ public class Customer implements UserDetails {
     @Column(name = "kycCompleted", columnDefinition = "boolean default false")
     private boolean kycCompleted;
 
-    @ManyToMany
+    @Column(name = "is-admin")
+    private boolean isAdmin;
+
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_recently_viewed",
             joinColumns = @JoinColumn(name = "customer_id"),

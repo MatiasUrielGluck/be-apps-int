@@ -3,6 +3,7 @@ package com.uade.beappsint.service;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
+import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ProductRepository;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,15 @@ public class ProductService {
     }
 
     public ProductDTO createProduct(Product product) {
+        assertAdmin();
+        product.setCreatedBy(authService.getAuthenticatedCustomer());
         Product savedProduct = productRepository.save(product);
         return savedProduct.toDTO();
     }
 
     public ProductDTO updateProduct(Long id, Product productDetails) {
+        Customer customer = assertAdmin();
+        isProductCreator(id, customer);
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
@@ -53,6 +58,8 @@ public class ProductService {
     }
 
     public void deleteProduct(Long id) {
+        assertAdmin();
+        isProductCreator(id, authService.getAuthenticatedCustomer());
         productRepository.deleteById(id);
     }
 
@@ -87,5 +94,22 @@ public class ProductService {
                 .stream()
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Customer assertAdmin() {
+        Customer customer = authService.getAuthenticatedCustomer();
+        if (!customer.isAdmin()) {
+            throw new RuntimeException("Access denied: only administrators can perform this action.");
+        }
+        return customer;
+    }
+
+    private void isProductCreator(Long productId, Customer customer) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BadRequestException("Product not found"));
+
+        if (!product.getCreatedBy().getId().equals(customer.getId())) {
+            throw new RuntimeException("Access denied: you are not the creator of this product.");
+        }
     }
 }
