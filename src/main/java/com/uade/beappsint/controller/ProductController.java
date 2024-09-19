@@ -2,8 +2,6 @@ package com.uade.beappsint.controller;
 
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
-import com.uade.beappsint.service.ProductService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,60 +9,31 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-public class ProductController {
-    private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
-
+public interface ProductController {
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
-    }
+    ResponseEntity<List<ProductDTO>> getAllProducts();
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
-    }
+    ResponseEntity<ProductDTO> getProductById(@PathVariable Long id);
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
-    }
+    ResponseEntity<ProductDTO> createProduct(@RequestBody Product product);
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        return ResponseEntity.ok(productService.updateProduct(id, productDetails));
-    }
+    ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product productDetails);
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
-    }
+    ResponseEntity<Void> deleteProduct(@PathVariable Long id);
 
     @PostMapping("/{id}/view")
-    public ResponseEntity<Void> viewProduct(@PathVariable Long id) {
-        productService.viewProduct(id);
-        return ResponseEntity.noContent().build();
-    }
+    ResponseEntity<Void> viewProduct(@PathVariable Long id);
 
     @GetMapping("/featured")
-    public ResponseEntity<List<ProductDTO>> getFeaturedProducts() {
-        List<ProductDTO> featuredProducts = productService.getFeaturedProducts();
-        return ResponseEntity.ok(featuredProducts);
-    }
+    ResponseEntity<List<ProductDTO>> getFeaturedProducts();
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable String category) {
-        List<ProductDTO> products = productService.getProductsByCategory(category);
-        return ResponseEntity.ok(products);
-    }
+    ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable String category);
 
     @GetMapping("/recently-viewed")
-    public ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts() {
-        List<ProductDTO> recentlyViewedProducts = productService.getRecentlyViewedProducts();
-        return ResponseEntity.ok(recentlyViewedProducts);
-    }
+    ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts();
 }

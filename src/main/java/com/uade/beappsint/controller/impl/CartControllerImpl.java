@@ -1,4 +1,4 @@
-package com.uade.beappsint.controller;
+package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.entity.Cart;
 import com.uade.beappsint.service.CartService;
@@ -7,10 +7,10 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
-public class CartController {
+public class CartControllerImpl {
     private final CartService cartService;
 
-    public CartController(CartService cartService) {
+    public CartControllerImpl(CartService cartService) {
         this.cartService = cartService;
     }
 
