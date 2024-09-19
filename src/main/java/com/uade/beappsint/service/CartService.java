@@ -13,4 +13,6 @@ public interface CartService {
     Cart clearCart();
 
     Cart checkoutCart();
+
+    Cart getUserCart();
 }
