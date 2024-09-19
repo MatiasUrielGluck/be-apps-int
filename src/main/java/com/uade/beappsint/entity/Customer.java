@@ -41,7 +41,7 @@ public class Customer implements UserDetails {
     @Column(name = "kycCompleted", columnDefinition = "boolean default false")
     private boolean kycCompleted;
 
-    @Column(name = "is-admin")
+    @Column(name = "is_admin")
     private boolean isAdmin;
 
     @ManyToMany(fetch = FetchType.EAGER)

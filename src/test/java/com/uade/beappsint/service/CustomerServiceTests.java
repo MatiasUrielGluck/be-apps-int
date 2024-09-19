@@ -5,6 +5,7 @@ import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.repository.CustomerRepository;
+import com.uade.beappsint.service.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,7 +34,7 @@ public class CustomerServiceTests {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        customerService = new CustomerService(customerRepository, authService); // Manually inject the mocks
+        customerService = new CustomerServiceImpl(customerRepository, authService); // Manually inject the mocks
     }
 
     @Test
