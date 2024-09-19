@@ -1,36 +1,36 @@
 package com.uade.beappsint.controller.impl;
 
+import com.uade.beappsint.controller.CartController;
+import com.uade.beappsint.dto.cart.AddRequestDTO;
 import com.uade.beappsint.entity.Cart;
 import com.uade.beappsint.service.CartService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cart")
-public class CartControllerImpl {
+@RequiredArgsConstructor
+public class CartControllerImpl implements CartController {
     private final CartService cartService;
 
-    public CartControllerImpl(CartService cartService) {
-        this.cartService = cartService;
-    }
-
     @PostMapping("/add")
-    public ResponseEntity<Cart> addProductToCart(@RequestParam Long userId, @RequestParam Long productId) {
-        return ResponseEntity.ok(cartService.addProductToCart(userId, productId));
+    public ResponseEntity<Cart> addProductToCart(@RequestBody AddRequestDTO addRequestDTO) {
+        return ResponseEntity.ok(cartService.addProductToCart(addRequestDTO));
     }
 
-    @PostMapping("/remove")
-    public ResponseEntity<Cart> removeProductFromCart(@RequestParam Long userId, @RequestParam Long productId) {
-        return ResponseEntity.ok(cartService.removeProductFromCart(userId, productId));
+    @PutMapping("/remove/{productId}")
+    public ResponseEntity<Cart> removeProductFromCart(@PathVariable Long productId) {
+        return ResponseEntity.ok(cartService.removeProductFromCart(productId));
     }
 
-    @PostMapping("/clear")
-    public ResponseEntity<Cart> clearCart(@RequestParam Long userId) {
-        return ResponseEntity.ok(cartService.clearCart(userId));
+    @PutMapping("/clear")
+    public ResponseEntity<Cart> clearCart() {
+        return ResponseEntity.ok(cartService.clearCart());
     }
 
     @PostMapping("/checkout")
-    public ResponseEntity<Cart> checkoutCart(@RequestParam Long userId) {
-        return ResponseEntity.ok(cartService.checkoutCart(userId));
+    public ResponseEntity<Cart> checkoutCart() {
+        return ResponseEntity.ok(cartService.checkoutCart());
     }
 }

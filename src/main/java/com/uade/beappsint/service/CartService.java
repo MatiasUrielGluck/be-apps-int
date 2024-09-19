@@ -1,15 +1,16 @@
 package com.uade.beappsint.service;
 
+import com.uade.beappsint.dto.cart.AddRequestDTO;
 import com.uade.beappsint.entity.Cart;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CartService {
-    Cart addProductToCart(Long userId, Long productId);
+    Cart addProductToCart(AddRequestDTO addRequestDTO);
 
-    Cart removeProductFromCart(Long userId, Long productId);
+    Cart removeProductFromCart(Long productId);
 
-    Cart clearCart(Long userId);
+    Cart clearCart();
 
-    Cart checkoutCart(Long userId);
+    Cart checkoutCart();
 }
