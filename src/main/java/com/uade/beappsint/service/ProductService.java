@@ -3,11 +3,9 @@ package com.uade.beappsint.service;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface ProductService {
     List<ProductDTO> getAllProducts();
 
