@@ -37,6 +37,11 @@ public class CartServiceImpl implements CartService {
         return null;
     }
 
+    @Override
+    public Cart getUserCart() {
+        return null;
+    }
+
     /*
     TODO: ** -- ** -- ** -- ** -- ** -- **
     TODO: Implementación anterior. Luego de la migración de arquitectura, utilizar la firma del interface.
