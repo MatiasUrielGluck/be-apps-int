@@ -38,10 +38,10 @@ public class CartServiceImpl implements CartService {
     }
 
     /*
-    TODO: ** -- ** -- ** -- ** -- **
+    TODO: ** -- ** -- ** -- ** -- ** -- **
     TODO: Implementación anterior. Luego de la migración de arquitectura, utilizar la firma del interface.
     TODO: Para obtener el userId utilizar el método getAuthenticatedCustomer del authService. Ver ejemplo en Product.
-    TODO: ** -- ** -- ** -- ** -- **
+    TODO: ** -- ** -- ** -- ** -- ** -- **
     public Cart addProductToCart(Long userId, Long productId) {
         Cart cart = cartRepository.findByUserId(userId).orElse(new Cart());
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
