@@ -102,6 +102,10 @@ public class Customer implements UserDetails {
                 .firstname(this.firstname)
                 .lastname(this.lastname)
                 .dateOfBirth(this.dateOfBirth)
+                .streetName(this.streetName)
+                .streetNumber(this.streetNumber)
+                .complementaryAddress(this.complementaryAddress)
+                .phoneNumber(this.phoneNumber)
                 .build();
     }
 }

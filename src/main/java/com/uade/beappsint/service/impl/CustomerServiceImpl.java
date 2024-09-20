@@ -1,8 +1,10 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
+import com.uade.beappsint.dto.profile.ProfileEditionDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
@@ -54,5 +56,16 @@ public class CustomerServiceImpl implements CustomerService {
         return KycResponseDTO.builder()
                 .kycStatus(KycStatusEnum.COMPLETED_KYC)
                 .build();
+    }
+
+    public CustomerInfoDTO editCustomerInfo(ProfileEditionDTO requestDTO) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        customer.setStreetName(requestDTO.getStreetName() == null ? customer.getStreetName() : requestDTO.getStreetName());
+        customer.setStreetNumber(requestDTO.getStreetNumber() == null ? customer.getStreetNumber() : requestDTO.getStreetNumber());
+        customer.setComplementaryAddress(requestDTO.getComplementaryAddress() == null ? customer.getComplementaryAddress() : requestDTO.getComplementaryAddress());
+        customer.setPhoneNumber(requestDTO.getPhoneNumber() == null ? customer.getPhoneNumber() : requestDTO.getPhoneNumber());
+        Customer savedCustomer = customerRepository.save(customer);
+
+        return savedCustomer.toDto();
     }
 }
