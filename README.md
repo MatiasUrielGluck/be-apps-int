@@ -8,3 +8,6 @@ Desarrollo del trabajo práctico de la materia Aplicaciones Interactivas, de la 
 1. Clonar el repositorio.
 2. Crear schema de la base de datos, con nombre apps-inter.
 3. Crear el archivo .env y configurarlo.
+
+## Swagger
+Se puede acceder mediante el siguiente link: http://localhost:8080/swagger-ui/index.html
