@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Collections;
 
 @Service
 @RequiredArgsConstructor
@@ -67,8 +68,10 @@ public class ProductServiceImpl implements ProductService {
         product.setViews(product.getViews() + 1);
         productRepository.save(product);
 
-        customer.getRecentlyViewedProducts().add(product);
-        customerRepository.save(customer);
+        if (!customer.getRecentlyViewedProducts().contains(product)) {
+            customer.getRecentlyViewedProducts().add(product);
+            customerRepository.save(customer);
+        }
     }
 
     public List<ProductDTO> getFeaturedProducts() {
@@ -87,7 +90,9 @@ public class ProductServiceImpl implements ProductService {
 
     public List<ProductDTO> getRecentlyViewedProducts() {
         Customer customer = authService.getAuthenticatedCustomer();
-        return customer.getRecentlyViewedProducts()
+        List<Product> recentlyViewedProducts = customer.getRecentlyViewedProducts();
+        Collections.reverse(recentlyViewedProducts);
+        return recentlyViewedProducts
                 .stream()
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
