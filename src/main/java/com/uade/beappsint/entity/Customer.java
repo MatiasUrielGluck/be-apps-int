@@ -1,6 +1,7 @@
 package com.uade.beappsint.entity;
 
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
+import com.uade.beappsint.enums.KycStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,8 +39,20 @@ public class Customer implements UserDetails {
     @Column(name = "dob")
     private LocalDate dateOfBirth;
 
-    @Column(name = "kycCompleted", columnDefinition = "boolean default false")
-    private boolean kycCompleted;
+    @Column(name = "kyc_status")
+    private KycStatusEnum kycStatus;
+
+    @Column(name = "street_name")
+    private String streetName;
+
+    @Column(name = "street_number")
+    private String streetNumber;
+
+    @Column(name = "complementary_address")
+    private String complementaryAddress;
+
+    @Column(name = "phone_number")
+    private String phoneNumber;
 
     @Column(name = "is_admin")
     private boolean isAdmin;

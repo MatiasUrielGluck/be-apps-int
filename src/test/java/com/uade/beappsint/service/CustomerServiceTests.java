@@ -1,8 +1,9 @@
 package com.uade.beappsint.service;
 
-import com.uade.beappsint.dto.kyc.KycRequestDTO;
+import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.entity.Customer;
+import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.service.impl.CustomerServiceImpl;
@@ -41,9 +42,9 @@ public class CustomerServiceTests {
     void testBasicKyc_Success() {
         // Arrange
         Customer mockCustomer = new Customer();
-        mockCustomer.setKycCompleted(false);
+        mockCustomer.setKycStatus(KycStatusEnum.BASIC_KYC);
 
-        KycRequestDTO kycRequestDTO = KycRequestDTO.builder()
+        KycBasicRequestDTO kycBasicRequestDTO = KycBasicRequestDTO.builder()
                 .firstname("John")
                 .lastname("Doe")
                 .dateOfBirth(LocalDate.of(2000, 1, 1))
@@ -52,23 +53,23 @@ public class CustomerServiceTests {
         Mockito.when(authService.getAuthenticatedCustomer()).thenReturn(mockCustomer);
 
         // Act
-        KycResponseDTO response = customerService.basicKyc(kycRequestDTO);
+        KycResponseDTO response = customerService.basicKyc(kycBasicRequestDTO);
 
         // Assert
-        assertTrue(response.isKycCompleted());
+        assertEquals(response.getKycStatus(), KycStatusEnum.RESIDENTIAL_KYC);
         assertEquals("John", mockCustomer.getFirstname());
         assertEquals("Doe", mockCustomer.getLastname());
         assertEquals(LocalDate.of(2000, 1, 1), mockCustomer.getDateOfBirth());
-        assertTrue(mockCustomer.isKycCompleted());
+        assertEquals(mockCustomer.getKycStatus(), KycStatusEnum.RESIDENTIAL_KYC);
     }
 
     @Test
     void testBasicKyc_InvalidDob_Fail() {
         // Arrange
         Customer mockCustomer = new Customer();
-        mockCustomer.setKycCompleted(false);
+        mockCustomer.setKycStatus(KycStatusEnum.BASIC_KYC);
 
-        KycRequestDTO kycRequestDTO = KycRequestDTO.builder()
+        KycBasicRequestDTO kycBasicRequestDTO = KycBasicRequestDTO.builder()
                 .firstname("John")
                 .lastname("Doe")
                 .dateOfBirth(LocalDate.now())
@@ -77,7 +78,7 @@ public class CustomerServiceTests {
         Mockito.when(authService.getAuthenticatedCustomer()).thenReturn(mockCustomer);
 
         // Act and Assert
-        assertThrowsExactly(BadRequestException.class, () -> customerService.basicKyc(kycRequestDTO));
+        assertThrowsExactly(BadRequestException.class, () -> customerService.basicKyc(kycBasicRequestDTO));
         verify(customerRepository, never()).save(Mockito.any(Customer.class));
     }
 }
