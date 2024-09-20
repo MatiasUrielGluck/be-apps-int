@@ -2,69 +2,38 @@ package com.uade.beappsint.controller;
 
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
-import com.uade.beappsint.service.ProductService;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/api/products")
-public class ProductController {
-    private final ProductService productService;
+@Tag(name = "Product", description = "Endpoints for product display and management")
+public interface ProductController {
+    @Operation(summary = "Return all products", description = "Returns all the database products and their info.")
+    ResponseEntity<List<ProductDTO>> getAllProducts();
 
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
+    @Operation(summary = "Return a product by the ID", description = "Returns a product by the ID.")
+    ResponseEntity<ProductDTO> getProductById(Long id);
 
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
-    }
+    @Operation(summary = "Create a product", description = "Create a product. Only admins can perform this action.")
+    ResponseEntity<ProductDTO> createProduct(Product product);
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductById(id));
-    }
+    @Operation(summary = "update a product", description = "update a product. Only admins can perform this action.")
+    ResponseEntity<ProductDTO> updateProduct(Long id, Product productDetails);
 
-    @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
-    }
+    @Operation(summary = "Delete a product", description = "Delete a product. Only admins can perform this action.")
+    ResponseEntity<Void> deleteProduct(Long id);
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
-        return ResponseEntity.ok(productService.updateProduct(id, productDetails));
-    }
+    @Operation(summary = "View a product", description = "Receives the product id and associates the product with the logged user.")
+    ResponseEntity<Void> viewProduct(Long id);
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
-        return ResponseEntity.noContent().build();
-    }
+    @Operation(summary = "Return the featured products", description = "Return the actual featured products.")
+    ResponseEntity<List<ProductDTO>> getFeaturedProducts();
 
-    @PostMapping("/{id}/view")
-    public ResponseEntity<Void> viewProduct(@PathVariable Long id) {
-        productService.viewProduct(id);
-        return ResponseEntity.noContent().build();
-    }
+    @Operation(summary = "Return the category products", description = "Return the category products.")
+    ResponseEntity<List<ProductDTO>> getProductsByCategory(String category);
 
-    @GetMapping("/featured")
-    public ResponseEntity<List<ProductDTO>> getFeaturedProducts() {
-        List<ProductDTO> featuredProducts = productService.getFeaturedProducts();
-        return ResponseEntity.ok(featuredProducts);
-    }
-
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@PathVariable String category) {
-        List<ProductDTO> products = productService.getProductsByCategory(category);
-        return ResponseEntity.ok(products);
-    }
-
-    @GetMapping("/recently-viewed")
-    public ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts() {
-        List<ProductDTO> recentlyViewedProducts = productService.getRecentlyViewedProducts();
-        return ResponseEntity.ok(recentlyViewedProducts);
-    }
+    @Operation(summary = "Return the user's recently viewed products", description = "Return the user's recently viewed products.")
+    ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts();
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class AddRequestDTO {
-    private Long userId;
+    private Integer userId;
     private Long productId;
 }

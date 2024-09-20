@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-public class KycRequestDTO {
+public class KycBasicRequestDTO {
     @NotNull @NotBlank
     private String firstname;
 
