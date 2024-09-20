@@ -1,9 +1,11 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.CustomerController;
+import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
+import com.uade.beappsint.dto.profile.ProfileEditionDTO;
 import com.uade.beappsint.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +33,12 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerService.residentialKyc(requestDTO));
+    }
+
+    @PutMapping("/profile")
+    public ResponseEntity<CustomerInfoDTO> editCustomerInfo(@RequestBody @Validated ProfileEditionDTO requestDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.editCustomerInfo(requestDTO));
     }
 }
