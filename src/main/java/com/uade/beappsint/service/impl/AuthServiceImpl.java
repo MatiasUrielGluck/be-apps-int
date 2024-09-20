@@ -2,6 +2,7 @@ package com.uade.beappsint.service.impl;
 
 import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.entity.Customer;
+import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.UserAlreadyExistsException;
 import com.uade.beappsint.repository.CustomerRepository;
@@ -30,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
         Customer newUser = Customer.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .kycCompleted(false)
+                .kycStatus(KycStatusEnum.BASIC_KYC)
                 .isAdmin(false)
                 .build();
 
