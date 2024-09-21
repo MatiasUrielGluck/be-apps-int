@@ -19,4 +19,13 @@ public interface CustomerController {
 
     @Operation(summary = "Profile info edition", description = "Allows certain profile info to be updated in the system")
     ResponseEntity<CustomerInfoDTO> editCustomerInfo(ProfileEditionDTO requestDTO);
+
+    @Operation(summary = "Get favorite products", description = "Retrieves the favorite products of a customer")
+    ResponseEntity<List<Product>> getFavoriteProducts(@PathVariable Integer customerId);
+
+    @Operation(summary = "Request admin role", description = "Creates a request for a customer to become an admin")
+    ResponseEntity<AdminRequest> requestAdminRole(@PathVariable Integer customerId);
+
+    @Operation(summary = "Approve admin request", description = "Allows an admin to approve a customer admin request")
+    ResponseEntity<AdminRequest> approveAdminRequest(@PathVariable Integer requestId);
 }

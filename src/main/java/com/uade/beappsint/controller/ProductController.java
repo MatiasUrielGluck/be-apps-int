@@ -36,4 +36,10 @@ public interface ProductController {
 
     @Operation(summary = "Return the user's recently viewed products", description = "Return the user's recently viewed products.")
     ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts();
+
+    @Operation(summary = "Search products by name", description = "Returns products that match the given partial name.")
+    ResponseEntity<List<ProductDTO>> searchProductsByName(String partialName);
+
+    @Operation(summary = "Get product recommendations", description = "Get recommendations for a product based on genre, decade, and director.")
+    ResponseEntity<List<ProductDTO>> getRecommendations(Long id);
 }

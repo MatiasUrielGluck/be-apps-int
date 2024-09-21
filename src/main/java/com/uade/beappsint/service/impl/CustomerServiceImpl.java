@@ -1,13 +1,18 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.entity.AdminRequest;
 import com.uade.beappsint.entity.Customer;
+import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
+import com.uade.beappsint.repository.AdminRequestRepository;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.CustomerService;
@@ -16,16 +21,20 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
+    private final AdminRequestRepository adminRequestRepository;
     private final AuthService authService;
 
     public KycResponseDTO basicKyc(KycBasicRequestDTO kycBasicRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
-        if (!customer.getKycStatus().equals(KycStatusEnum.BASIC_KYC)) throw new BadRequestException("Kyc stage already completed.");
+        if (!customer.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
 
         int minAge = 18;
         boolean validDateOfBirth = kycBasicRequestDTO.getDateOfBirth() != null && Period.between(kycBasicRequestDTO.getDateOfBirth(), LocalDate.now()).getYears() >= minAge;
@@ -44,7 +53,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     public KycResponseDTO residentialKyc(KycResidentialRequestDTO kycResidentialRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
-        if (!customer.getKycStatus().equals(KycStatusEnum.RESIDENTIAL_KYC)) throw new BadRequestException("Kyc stage not accessible.");
+        if (!customer.getKycStatus().equals(KycStatusEnum.RESIDENTIAL_KYC))
+            throw new BadRequestException("Kyc stage not accessible.");
 
         customer.setStreetName(kycResidentialRequestDTO.getStreetName());
         customer.setStreetNumber(kycResidentialRequestDTO.getStreetNumber());
@@ -67,5 +77,33 @@ public class CustomerServiceImpl implements CustomerService {
         Customer savedCustomer = customerRepository.save(customer);
 
         return savedCustomer.toDto();
+    }
+
+    public List<ProductDTO> getFavoriteProducts(Integer customerId) {
+        // Lógica para obtener productos favoritos
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        return customer.getFavoriteProducts().stream()
+                .map(this::convertToDTO) // Método para convertir a DTO
+                .collect(Collectors.toList());
+    }
+
+    public AdminRequestDTO requestAdminRole(Integer customerId) {
+        // Lógica para crear solicitud de administrador
+        // Implementar según tus necesidades
+    }
+
+    public AdminRequestDTO approveAdminRequest(Integer requestId) {
+        // Lógica para aprobar solicitud de administrador
+        // Implementar según tus necesidades
+    }
+
+    private ProductDTO convertToDTO(Product product) {
+        // Lógica para convertir un producto a DTO
+        return new ProductDTO(/* asignar campos aquí */);
+    }
+
+    private AdminRequestDTO convertToAdminRequestDTO(AdminRequest adminRequest) {
+        // Lógica para convertir solicitud de administrador a DTO
+        return new AdminRequestDTO(/* asignar campos aquí */);
     }
 }

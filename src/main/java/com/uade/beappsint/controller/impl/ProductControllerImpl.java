@@ -68,4 +68,17 @@ public class ProductControllerImpl implements ProductController {
         List<ProductDTO> recentlyViewedProducts = productService.getRecentlyViewedProducts();
         return ResponseEntity.ok(recentlyViewedProducts);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProductsByName(@RequestParam String partialName) {
+        List<ProductDTO> products = productService.searchProductsByName(partialName);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/{id}/recommendations")
+    public ResponseEntity<List<ProductDTO>> getRecommendations(@PathVariable Long id) {
+        List<ProductDTO> recommendations = productService.getRecommendations(id);
+        return ResponseEntity.ok(recommendations);
+    }
+
 }

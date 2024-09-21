@@ -28,4 +28,8 @@ public interface ProductService {
     Customer assertAdmin();
 
     void isProductCreator(Long productId, Customer customer);
+
+    List<ProductDTO> searchProductsByName(String partialName);
+
+    List<ProductDTO> getRecommendations(Long productId);
 }

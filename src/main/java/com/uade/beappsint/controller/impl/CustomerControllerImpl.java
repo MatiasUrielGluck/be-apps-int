@@ -6,11 +6,15 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.entity.AdminRequest;
+import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequestMapping("/customer")
 @RestController
@@ -40,5 +44,19 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerService.editCustomerInfo(requestDTO));
+    }
+
+    // Obtener productos favoritos de un cliente
+    @GetMapping("/{customerId}/favorites")
+    public ResponseEntity<List<Product>> getFavoriteProducts(@PathVariable Integer customerId) {
+        List<Product> favoriteProducts = customerService.getFavoriteProducts(customerId);
+        return ResponseEntity.status(HttpStatus.OK).body(favoriteProducts);
+    }
+
+    // Crear una solicitud de administrador
+    @PostMapping("/{customerId}/admin-request")
+    public ResponseEntity<AdminRequest> requestAdminRole(@PathVariable Integer customerId) {
+        AdminRequest adminRequest = customerService.requestAdminRole(customerId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminRequest);
     }
 }
