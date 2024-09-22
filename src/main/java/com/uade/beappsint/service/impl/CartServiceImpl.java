@@ -74,7 +74,6 @@ public class CartServiceImpl implements CartService {
 
         cart.setTotalPrice(cart.getTotalPrice() + product.getPrice() * addRequestDTO.getAmount());
 
-        product.setStock(product.getStock() - addRequestDTO.getAmount());
         Cart savedCart = cartRepository.save(cart);
         productRepository.save(product);
         return savedCart.toDTO();
@@ -82,77 +81,116 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public CartDTO removeProductFromCart(Long productId) {
-        /*
         Customer customer = authService.getAuthenticatedCustomer();
-        Product product = productRepository.findById(productId).orElseThrow(() -> new BadRequestException("Product not found"));
-        Cart cart = cartRepository.findByCustomerId(customer.getId()).orElseThrow(() -> new BadRequestException("Cart not found"));
-        cart.setProducts(cart.getProducts().stream().filter(prod -> !Objects.equals(prod.getId(), productId)).collect(Collectors.toList()));
-        cart.setTotalPrice(cart.getTotalPrice() - product.getPrice());
-        product.setStock(product.getStock() + product.getStock());
+        Cart cart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        CartItem cartItem = cartItems.stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Product not found in cart"));
+
+        cart.getCartItems().remove(cartItem);
+
+        cart.setTotalPrice(cart.getTotalPrice() - cartItem.getProduct().getPrice() * cartItem.getQuantity());
+
+        Product product = cartItem.getProduct();
+        productRepository.save(product);
+
+        cartItemRepository.delete(cartItem);
 
         Cart savedCart = cartRepository.save(cart);
-        productRepository.save(product);
         return savedCart.toDTO();
-
-         */
-        return null;
     }
 
     @Override
     public CartDTO clearCart() {
-        return null;
+        Customer customer = authService.getAuthenticatedCustomer();
+        Cart cart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        for (CartItem cartItem : cartItems) {
+            Product product = cartItem.getProduct();
+            productRepository.save(product);
+        }
+
+        cart.getCartItems().clear();
+
+        cart.setTotalPrice(0);
+
+        cartItemRepository.deleteAll(cartItems);
+
+        Cart savedCart = cartRepository.save(cart);
+        return savedCart.toDTO();
+    }
+
+    @Override
+    public CartDTO removeOneProductFromCart(Long productId) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        Cart cart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        CartItem cartItem = cartItems.stream()
+                .filter(item -> item.getProduct().getId().equals(productId))
+                .findFirst()
+                .orElseThrow(() -> new BadRequestException("Product not found in cart"));
+
+        Product product = cartItem.getProduct();
+
+        if (cartItem.getQuantity() > 1) {
+            cartItem.setQuantity(cartItem.getQuantity() - 1);
+            cartItemRepository.save(cartItem);
+        } else {
+            cart.getCartItems().remove(cartItem);
+            cartItemRepository.delete(cartItem);
+        }
+
+        cart.setTotalPrice(cart.getTotalPrice() - product.getPrice());
+
+        productRepository.save(product);
+        Cart savedCart = cartRepository.save(cart);
+
+        return savedCart.toDTO();
     }
 
     @Override
     public CartDTO checkoutCart() {
-        return null;
+        Customer customer = authService.getAuthenticatedCustomer();
+        Cart cart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+
+        List<CartItem> cartItems = cartItemRepository.findByCartId(cart.getId());
+
+        for (CartItem cartItem : cartItems) {
+            Product product = cartItem.getProduct();
+            if (product.getStock() < cartItem.getQuantity()) {
+                throw new BadRequestException("Not enough stock for product: " + product.getName());
+            }
+        }
+
+        for (CartItem cartItem : cartItems) {
+            Product product = cartItem.getProduct();
+            product.setStock(product.getStock() - cartItem.getQuantity());
+            productRepository.save(product);
+        }
+
+        clearCart();
+        Cart savedCart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+        return savedCart.toDTO();
     }
 
     @Override
     public CartDTO getUserCart() {
-        return null;
+        Customer customer = authService.getAuthenticatedCustomer();
+        Cart cart = cartRepository.findByCustomerId(customer.getId())
+                .orElseThrow(() -> new BadRequestException("Cart not found"));
+        return cart.toDTO();
     }
-
-    /*
-    TODO: ** -- ** -- ** -- ** -- ** -- **
-    TODO: Implementación anterior. Luego de la migración de arquitectura, utilizar la firma del interface.
-    TODO: Para obtener el userId utilizar el método getAuthenticatedCustomer del authService. Ver ejemplo en Product.
-    TODO: ** -- ** -- ** -- ** -- ** -- **
-    public Cart addProductToCart(Long userId, Long productId) {
-        Cart cart = cartRepository.findByUserId(userId).orElse(new Cart());
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-        cart.getProducts().add(product);
-        cart.setTotalPrice(cart.getTotalPrice() + product.getPrice());
-        return cartRepository.save(cart);
-    }
-
-    public Cart removeProductFromCart(Long userId, Long productId) {
-        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
-        cart.getProducts().remove(product);
-        cart.setTotalPrice(cart.getTotalPrice() - product.getPrice());
-        return cartRepository.save(cart);
-    }
-
-    public Cart clearCart(Long userId) {
-        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        cart.getProducts().clear();
-        cart.setTotalPrice(0);
-        return cartRepository.save(cart);
-    }
-
-    public Cart checkoutCart(Long userId) {
-        Cart cart = cartRepository.findByUserId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
-        for (Product product : cart.getProducts()) {
-            if (product.getStock() < 1) {
-                throw new RuntimeException("Product out of stock: " + product.getName());
-            }
-            product.setStock(product.getStock() - 1);
-            productRepository.save(product);
-        }
-        cart.getProducts().clear();
-        cart.setTotalPrice(0);
-        return cartRepository.save(cart);
-    }
-     */
 }

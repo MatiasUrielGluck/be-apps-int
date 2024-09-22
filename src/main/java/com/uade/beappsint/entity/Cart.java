@@ -2,6 +2,7 @@ package com.uade.beappsint.entity;
 
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.cart.CartDTO;
+import com.uade.beappsint.dto.cart.CartItemDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,19 +35,15 @@ public class Cart {
     private double totalPrice;
 
     public CartDTO toDTO() {
-        /*
-        List<ProductDTO> mappedProducts = new ArrayList<>();
-        for (Product product : products) {
-            mappedProducts.add(product.toDTO());
+        List<CartItemDTO> mappedCartItems = new ArrayList<>();
+        for (CartItem cartItem: cartItems) {
+            mappedCartItems.add(cartItem.toDTO());
         }
 
         return CartDTO.builder()
                 .id(this.id)
-                .products(mappedProducts)
+                .cartItems(mappedCartItems)
                 .totalPrice(this.totalPrice)
                 .build();
-
-         */
-        return null;
     }
 }
