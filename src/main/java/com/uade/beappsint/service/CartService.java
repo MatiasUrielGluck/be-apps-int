@@ -11,6 +11,8 @@ public interface CartService {
 
     CartDTO clearCart();
 
+    CartDTO removeOneProductFromCart(Long productId);
+
     CartDTO checkoutCart();
 
     CartDTO getUserCart();

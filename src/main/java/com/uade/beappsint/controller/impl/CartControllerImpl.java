@@ -25,7 +25,12 @@ public class CartControllerImpl implements CartController {
         return ResponseEntity.ok(cartService.removeProductFromCart(productId));
     }
 
-    @PutMapping("/clear")
+    @DeleteMapping("/reduce/{productId}")
+    public ResponseEntity<CartDTO> removeOneProductFromCart(@PathVariable Long productId) {
+        return ResponseEntity.ok(cartService.removeOneProductFromCart(productId));
+    }
+
+    @DeleteMapping("/clear")
     public ResponseEntity<CartDTO> clearCart() {
         return ResponseEntity.ok(cartService.clearCart());
     }
@@ -33,5 +38,10 @@ public class CartControllerImpl implements CartController {
     @PostMapping("/checkout")
     public ResponseEntity<CartDTO> checkoutCart() {
         return ResponseEntity.ok(cartService.checkoutCart());
+    }
+
+    @GetMapping()
+    public ResponseEntity<CartDTO> getCart() {
+        return ResponseEntity.ok(cartService.getUserCart());
     }
 }
