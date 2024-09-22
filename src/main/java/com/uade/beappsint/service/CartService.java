@@ -1,16 +1,19 @@
 package com.uade.beappsint.service;
 
 import com.uade.beappsint.dto.cart.AddRequestDTO;
+import com.uade.beappsint.dto.cart.CartDTO;
 import com.uade.beappsint.entity.Cart;
 
 public interface CartService {
-    Cart addProductToCart(AddRequestDTO addRequestDTO);
+    CartDTO addProductToCart(AddRequestDTO addRequestDTO);
 
-    Cart removeProductFromCart(Long productId);
+    CartDTO removeProductFromCart(Long productId);
 
-    Cart clearCart();
+    CartDTO clearCart();
 
-    Cart checkoutCart();
+    CartDTO removeOneProductFromCart(Long productId);
 
-    Cart getUserCart();
+    CartDTO checkoutCart();
+
+    CartDTO getUserCart();
 }
