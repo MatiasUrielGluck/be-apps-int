@@ -1,11 +1,15 @@
 package com.uade.beappsint.entity;
 
+import com.uade.beappsint.dto.ProductDTO;
+import com.uade.beappsint.dto.cart.CartDTO;
+import com.uade.beappsint.dto.cart.CartItemDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,17 +27,26 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private Long userId;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    private Customer customer;
 
-    @ManyToMany
-    @JoinTable(
-            name = "cart_products",
-            joinColumns = @JoinColumn(name = "cart_id"),
-            inverseJoinColumns = @JoinColumn(name = "product_id")
-    )
-    private List<Product> products;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CartItem> cartItems = new ArrayList<>();
 
     @Column(name = "total_price", nullable = false)
     private double totalPrice;
+
+    public CartDTO toDTO() {
+        List<CartItemDTO> mappedCartItems = new ArrayList<>();
+        for (CartItem cartItem: cartItems) {
+            mappedCartItems.add(cartItem.toDTO());
+        }
+
+        return CartDTO.builder()
+                .id(this.id)
+                .cartItems(mappedCartItems)
+                .totalPrice(this.totalPrice)
+                .build();
+    }
 }

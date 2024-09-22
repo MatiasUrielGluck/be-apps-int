@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class AddRequestDTO {
-    private Integer userId;
+    private Integer amount;
     private Long productId;
 }

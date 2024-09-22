@@ -74,6 +74,7 @@ public class TransactionServiceImpl implements TransactionService {
      */
     @Override
     public TransactionDTO initializeTransaction() {
+        /**
         List<Product> products = cartService.getUserCart().getProducts();
         if (products.isEmpty()) throw new BadRequestException("Empty cart cannot create transaction");
 
@@ -92,6 +93,8 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction savedTransaction = transactionRepository.save(transaction);
         return savedTransaction.toDTO();
+         */
+        return null;
     }
 
     /**
