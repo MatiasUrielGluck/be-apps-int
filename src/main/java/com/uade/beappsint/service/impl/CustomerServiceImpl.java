@@ -17,12 +17,23 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 
+/**
+ * Implementation of the CustomerService interface.
+ * Provides methods for handling customer-related operations.
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final AuthService authService;
 
+    /**
+     * Performs basic KYC (Know Your Customer) verification.
+     *
+     * @param kycBasicRequestDTO the basic KYC request data transfer object
+     * @return the KYC response data transfer object
+     * @throws BadRequestException if the KYC stage is already completed or the customer is under 18 years old
+     */
     public KycResponseDTO basicKyc(KycBasicRequestDTO kycBasicRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
         if (!customer.getKycStatus().equals(KycStatusEnum.BASIC_KYC)) throw new BadRequestException("Kyc stage already completed.");
@@ -42,6 +53,13 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
+    /**
+     * Performs residential KYC (Know Your Customer) verification.
+     *
+     * @param kycResidentialRequestDTO the residential KYC request data transfer object
+     * @return the KYC response data transfer object
+     * @throws BadRequestException if the KYC stage is not accessible
+     */
     public KycResponseDTO residentialKyc(KycResidentialRequestDTO kycResidentialRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
         if (!customer.getKycStatus().equals(KycStatusEnum.RESIDENTIAL_KYC)) throw new BadRequestException("Kyc stage not accessible.");
@@ -58,6 +76,12 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
+    /**
+     * Edits the customer's information.
+     *
+     * @param requestDTO the profile edition data transfer object
+     * @return the updated customer information data transfer object
+     */
     public CustomerInfoDTO editCustomerInfo(ProfileEditionDTO requestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
         customer.setStreetName(requestDTO.getStreetName() == null ? customer.getStreetName() : requestDTO.getStreetName());

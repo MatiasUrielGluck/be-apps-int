@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for login requests.
+ * Contains the email and password required for authentication.
+ */
 @Data
 @Builder
 public class LoginRequestDTO {

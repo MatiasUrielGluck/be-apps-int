@@ -10,6 +10,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entity representing a transaction.
+ * Contains transaction details such as ID, customer, date, amounts in USD and ARS, conversion rate, payment status, and products.
+ */
 @Entity
 @Data
 @Builder
@@ -45,6 +49,11 @@ public class Transaction {
             inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
 
+    /**
+     * Converts the transaction entity to a TransactionDTO.
+     *
+     * @return a TransactionDTO containing the transaction's information.
+     */
     public TransactionDTO toDTO() {
         List<ProductDTO> productsDTO = new ArrayList<>();
         for (Product product : products) {

@@ -8,7 +8,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-
+/**
+ * Entity representing a shopping cart.
+ * Contains the cart ID, user ID, list of products, and total price.
+ */
 @Entity
 @Table(name = "cart")
 @Data
