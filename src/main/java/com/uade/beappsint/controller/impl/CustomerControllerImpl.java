@@ -3,6 +3,7 @@ package com.uade.beappsint.controller.impl;
 import com.uade.beappsint.controller.CustomerController;
 import com.uade.beappsint.dto.AdminRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
+import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
@@ -60,10 +61,22 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(adminRequestDTO);
     }
 
-    @Override
+    @PutMapping("/admin-request/{requestId}/approve")
     public ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId) {
         AdminRequestDTO adminRequestDTO = customerService.approveAdminRequest(requestId);
         return ResponseEntity.status(HttpStatus.OK).body(adminRequestDTO);
+    }
+
+    @PostMapping("/{customerId}/reviews")
+    public ResponseEntity<ReviewDTO> addReview(@PathVariable Integer customerId, @RequestBody ReviewDTO reviewDTO) {
+        ReviewDTO createdReview = customerService.addReview(customerId, reviewDTO);
+        return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/products/{productId}/reviews")
+    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
+        List<ReviewDTO> reviews = customerService.getReviewsByProductId(productId);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
 }

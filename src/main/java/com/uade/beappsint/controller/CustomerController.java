@@ -2,6 +2,7 @@ package com.uade.beappsint.controller;
 
 import com.uade.beappsint.dto.AdminRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
+import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
@@ -32,4 +33,10 @@ public interface CustomerController {
 
     @Operation(summary = "Approve admin request", description = "Allows an admin to approve a customer admin request")
     ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId);
+
+    @Operation(summary = "Add a review", description = "Creates a new review for a customer.")
+    ResponseEntity<ReviewDTO> addReview(Integer customerId, ReviewDTO reviewDTO);
+
+    @Operation(summary = "Get reviews by product", description = "Retrieves all reviews for a specific product.")
+    ResponseEntity<List<ReviewDTO>> getReviewsByProductId(Long productId);
 }

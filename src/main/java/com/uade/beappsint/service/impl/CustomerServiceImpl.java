@@ -2,6 +2,7 @@ package com.uade.beappsint.service.impl;
 
 import com.uade.beappsint.dto.AdminRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
+import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
@@ -10,13 +11,16 @@ import com.uade.beappsint.dto.profile.ProfileEditionDTO;
 import com.uade.beappsint.entity.AdminRequest;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
+import com.uade.beappsint.entity.Review;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.AdminRequestRepository;
 import com.uade.beappsint.repository.CustomerRepository;
+import com.uade.beappsint.repository.ReviewRepository;
 import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.CustomerService;
+import com.uade.beappsint.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +34,8 @@ import java.util.stream.Collectors;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final AdminRequestRepository adminRequestRepository;
+    private final ProductService productService;
+    private final ReviewRepository reviewRepository;
     private final AuthService authService;
 
     public KycResponseDTO basicKyc(KycBasicRequestDTO kycBasicRequestDTO) {
@@ -87,7 +93,6 @@ public class CustomerServiceImpl implements CustomerService {
                 .collect(Collectors.toList());
     }
 
-    @Override
     public AdminRequestDTO requestAdminRole(Integer customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
@@ -99,7 +104,6 @@ public class CustomerServiceImpl implements CustomerService {
         return adminRequest.toDTO();
     }
 
-    @Override
     public AdminRequestDTO approveAdminRequest(Integer requestId) {
         AdminRequest adminRequest = adminRequestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin request not found"));
@@ -111,4 +115,29 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
         return adminRequest.toDTO();
     }
+
+    public ReviewDTO addReview(Integer customerId, ReviewDTO reviewDTO) {
+        Review review = new Review();
+        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        ProductDTO productDTO = productService.getProductById(reviewDTO.getProductId());
+        Product product = new Product();
+            product.setId(productDTO.getId());
+            product.setCategory(productDTO.getCategory());
+            product.setName(productDTO.getName());
+            product.setDirector(productDTO.getDirector());
+            product.setPrice(productDTO.getPrice());
+            product.setYear(productDTO.getYear());
+        review.setCustomer(customer);
+        review.setProduct(product);
+        review.setComment(reviewDTO.getComment());
+        review.setRating(reviewDTO.getRating());
+        Review savedReview = reviewRepository.save(review);
+        return savedReview.toDTO();
+    }
+
+    public List<ReviewDTO> getReviewsByProductId(Long productId) {
+        List<Review> reviews = reviewRepository.findByProductId(productId);
+        return reviews.stream().map(Review::toDTO).collect(Collectors.toList());
+    }
+
 }
