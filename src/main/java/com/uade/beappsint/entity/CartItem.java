@@ -4,6 +4,10 @@ import com.uade.beappsint.dto.cart.CartItemDTO;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity representing an item in the shopping cart.
+ * Contains the item ID, the associated cart, the product details, and the quantity of the product.
+ */
 @Entity
 @Data
 @Builder
@@ -25,6 +29,11 @@ public class CartItem {
 
     private int quantity;
 
+    /**
+     * Converts the CartItem entity to a CartItemDTO.
+     *
+     * @return the CartItemDTO representation of the CartItem entity
+     */
     public CartItemDTO toDTO() {
         return CartItemDTO.builder()
                 .id(this.id)
