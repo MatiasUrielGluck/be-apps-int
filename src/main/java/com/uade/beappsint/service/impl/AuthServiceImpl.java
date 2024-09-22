@@ -68,4 +68,5 @@ public class AuthServiceImpl implements AuthService {
     public CustomerInfoDTO getCustomerInfo() {
         return getAuthenticatedCustomer().toDto();
     }
+
 }

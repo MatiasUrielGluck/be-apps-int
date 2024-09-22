@@ -1,6 +1,8 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.CustomerController;
+import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
@@ -46,17 +48,22 @@ public class CustomerControllerImpl implements CustomerController {
                 .body(customerService.editCustomerInfo(requestDTO));
     }
 
-    // Obtener productos favoritos de un cliente
     @GetMapping("/{customerId}/favorites")
-    public ResponseEntity<List<Product>> getFavoriteProducts(@PathVariable Integer customerId) {
-        List<Product> favoriteProducts = customerService.getFavoriteProducts(customerId);
+    public ResponseEntity<List<ProductDTO>> getFavoriteProducts(@PathVariable Integer customerId) {
+        List<ProductDTO> favoriteProducts = customerService.getFavoriteProducts(customerId);
         return ResponseEntity.status(HttpStatus.OK).body(favoriteProducts);
     }
 
-    // Crear una solicitud de administrador
     @PostMapping("/{customerId}/admin-request")
-    public ResponseEntity<AdminRequest> requestAdminRole(@PathVariable Integer customerId) {
-        AdminRequest adminRequest = customerService.requestAdminRole(customerId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(adminRequest);
+    public ResponseEntity<AdminRequestDTO> requestAdminRole(@PathVariable Integer customerId) {
+        AdminRequestDTO adminRequestDTO = customerService.requestAdminRole(customerId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(adminRequestDTO);
     }
+
+    @Override
+    public ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId) {
+        AdminRequestDTO adminRequestDTO = customerService.approveAdminRequest(requestId);
+        return ResponseEntity.status(HttpStatus.OK).body(adminRequestDTO);
+    }
+
 }

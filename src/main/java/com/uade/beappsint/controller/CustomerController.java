@@ -1,5 +1,7 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
@@ -8,6 +10,8 @@ import com.uade.beappsint.dto.profile.ProfileEditionDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 @Tag(name = "Customer", description = "Endpoints for customer kyc and profile")
 public interface CustomerController {
@@ -21,11 +25,11 @@ public interface CustomerController {
     ResponseEntity<CustomerInfoDTO> editCustomerInfo(ProfileEditionDTO requestDTO);
 
     @Operation(summary = "Get favorite products", description = "Retrieves the favorite products of a customer")
-    ResponseEntity<List<Product>> getFavoriteProducts(@PathVariable Integer customerId);
+    ResponseEntity<List<ProductDTO>> getFavoriteProducts(Integer customerId);
 
     @Operation(summary = "Request admin role", description = "Creates a request for a customer to become an admin")
-    ResponseEntity<AdminRequest> requestAdminRole(@PathVariable Integer customerId);
+    ResponseEntity<AdminRequestDTO> requestAdminRole(Integer customerId);
 
     @Operation(summary = "Approve admin request", description = "Allows an admin to approve a customer admin request")
-    ResponseEntity<AdminRequest> approveAdminRequest(@PathVariable Integer requestId);
+    ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId);
 }

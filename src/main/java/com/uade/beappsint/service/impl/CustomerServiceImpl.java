@@ -12,6 +12,7 @@ import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
+import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.AdminRequestRepository;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.service.AuthService;
@@ -75,35 +76,39 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setComplementaryAddress(requestDTO.getComplementaryAddress() == null ? customer.getComplementaryAddress() : requestDTO.getComplementaryAddress());
         customer.setPhoneNumber(requestDTO.getPhoneNumber() == null ? customer.getPhoneNumber() : requestDTO.getPhoneNumber());
         Customer savedCustomer = customerRepository.save(customer);
-
         return savedCustomer.toDto();
     }
 
     public List<ProductDTO> getFavoriteProducts(Integer customerId) {
-        // Lógica para obtener productos favoritos
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        return customer.getFavoriteProducts().stream()
-                .map(this::convertToDTO) // Método para convertir a DTO
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        return customerRepository.findFavoriteProductsByCustomerId(customer.getId()).stream()
+                .map(Product::toDTO)
                 .collect(Collectors.toList());
     }
 
+    @Override
     public AdminRequestDTO requestAdminRole(Integer customerId) {
-        // Lógica para crear solicitud de administrador
-        // Implementar según tus necesidades
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        AdminRequest adminRequest = new AdminRequest();
+        adminRequest.setCustomer(customer);
+        adminRequest.setStatus(false);
+        adminRequest.setRequestDate(java.time.LocalDate.now());
+        adminRequest = adminRequestRepository.save(adminRequest);
+        return adminRequest.toDTO();
     }
 
+    @Override
     public AdminRequestDTO approveAdminRequest(Integer requestId) {
-        // Lógica para aprobar solicitud de administrador
-        // Implementar según tus necesidades
-    }
-
-    private ProductDTO convertToDTO(Product product) {
-        // Lógica para convertir un producto a DTO
-        return new ProductDTO(/* asignar campos aquí */);
-    }
-
-    private AdminRequestDTO convertToAdminRequestDTO(AdminRequest adminRequest) {
-        // Lógica para convertir solicitud de administrador a DTO
-        return new AdminRequestDTO(/* asignar campos aquí */);
+        AdminRequest adminRequest = adminRequestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Admin request not found"));
+        adminRequest.setApproved(true);
+        adminRequest.setApprovalDate(java.time.LocalDate.now());
+        adminRequest = adminRequestRepository.save(adminRequest);
+        Customer customer = adminRequest.getCustomer();
+        customer.setAdmin(true);
+        customerRepository.save(customer);
+        return adminRequest.toDTO();
     }
 }
