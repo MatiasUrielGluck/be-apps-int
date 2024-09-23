@@ -34,6 +34,9 @@ public interface CustomerController {
     @Operation(summary = "Approve admin request", description = "Allows an admin to approve a customer admin request")
     ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId);
 
+    @Operation(summary = "Get pending admin requests", description = "Retrieves a list of pending admin requests")
+    ResponseEntity<List<AdminRequestDTO>> getPendingAdminRequests();
+
     @Operation(summary = "Add a review", description = "Creates a new review for a customer.")
     ResponseEntity<ReviewDTO> addReview(Integer customerId, ReviewDTO reviewDTO);
 

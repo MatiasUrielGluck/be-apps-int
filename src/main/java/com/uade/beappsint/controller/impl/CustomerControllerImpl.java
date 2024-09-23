@@ -49,7 +49,7 @@ public class CustomerControllerImpl implements CustomerController {
                 .body(customerService.editCustomerInfo(requestDTO));
     }
 
-    @GetMapping("/{customerId}/favorites")
+    @GetMapping("favorites/{customerId}")
     public ResponseEntity<List<ProductDTO>> getFavoriteProducts(@PathVariable Integer customerId) {
         List<ProductDTO> favoriteProducts = customerService.getFavoriteProducts(customerId);
         return ResponseEntity.status(HttpStatus.OK).body(favoriteProducts);
@@ -67,7 +67,13 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(adminRequestDTO);
     }
 
-    @PostMapping("/{customerId}/reviews")
+    @GetMapping("/admin/pending-requests")
+    public ResponseEntity<List<AdminRequestDTO>> getPendingAdminRequests() {
+        List<AdminRequestDTO> pendingRequests = customerService.getPendingAdminRequests();
+        return ResponseEntity.status(HttpStatus.OK).body(pendingRequests);
+    }
+
+    @PostMapping("addReview/{customerId}")
     public ResponseEntity<ReviewDTO> addReview(@PathVariable Integer customerId, @RequestBody ReviewDTO reviewDTO) {
         ReviewDTO createdReview = customerService.addReview(customerId, reviewDTO);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);

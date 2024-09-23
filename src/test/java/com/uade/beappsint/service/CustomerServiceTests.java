@@ -35,7 +35,10 @@ public class CustomerServiceTests {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        customerService = new CustomerServiceImpl(customerRepository, authService); // Manually inject the mocks
+        /*
+        customerService = new CustomerServiceImpl(customerRepository, authService);
+        // Manually inject the mocks
+         */
     }
 
     @Test

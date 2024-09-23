@@ -105,6 +105,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public AdminRequestDTO approveAdminRequest(Integer requestId) {
+        assertAdmin();
         if (requestId == null) {
             throw new IllegalArgumentException("El ID de la solicitud de administrador no debe ser nulo");
         }
@@ -142,6 +143,19 @@ public class CustomerServiceImpl implements CustomerService {
     public List<ReviewDTO> getReviewsByProductId(Long productId) {
         List<Review> reviews = reviewRepository.findByProductId(productId);
         return reviews.stream().map(Review::toDTO).collect(Collectors.toList());
+    }
+
+    public List<AdminRequestDTO> getPendingAdminRequests() {
+        assertAdmin();
+        return adminRequestRepository.findByApprovedFalse().stream().map(AdminRequest::toDTO).collect(Collectors.toList());
+    }
+
+    private Customer assertAdmin() {
+        Customer customer = authService.getAuthenticatedCustomer();
+        if (!customer.isAdmin()) {
+            throw new RuntimeException("Access denied: only administrators can perform this action.");
+        }
+        return customer;
     }
 
 }

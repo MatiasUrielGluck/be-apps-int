@@ -8,6 +8,7 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.entity.AdminRequest;
 
 import java.util.List;
 
@@ -27,4 +28,6 @@ public interface CustomerService {
     ReviewDTO addReview(Integer customerId, ReviewDTO reviewDTO);
 
     List<ReviewDTO> getReviewsByProductId(Long productId);
+
+    List<AdminRequestDTO> getPendingAdminRequests();
 }
