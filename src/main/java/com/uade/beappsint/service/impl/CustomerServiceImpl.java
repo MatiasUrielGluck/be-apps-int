@@ -105,6 +105,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public AdminRequestDTO approveAdminRequest(Integer requestId) {
+        if (requestId == null) {
+            throw new IllegalArgumentException("El ID de la solicitud de administrador no debe ser nulo");
+        }
         AdminRequest adminRequest = adminRequestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Admin request not found"));
         adminRequest.setApproved(true);
@@ -113,6 +116,7 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = adminRequest.getCustomer();
         customer.setAdmin(true);
         customerRepository.save(customer);
+
         return adminRequest.toDTO();
     }
 

@@ -61,8 +61,8 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity.status(HttpStatus.CREATED).body(adminRequestDTO);
     }
 
-    @PutMapping("/admin-request/{requestId}/approve")
-    public ResponseEntity<AdminRequestDTO> approveAdminRequest(Integer requestId) {
+    @PutMapping("/admin/approve/{requestId}")
+    public ResponseEntity<AdminRequestDTO> approveAdminRequest(@PathVariable Integer requestId) {
         AdminRequestDTO adminRequestDTO = customerService.approveAdminRequest(requestId);
         return ResponseEntity.status(HttpStatus.OK).body(adminRequestDTO);
     }
