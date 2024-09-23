@@ -75,7 +75,7 @@ public class ProductControllerImpl implements ProductController {
         return ResponseEntity.ok(products);
     }
 
-    @GetMapping("/{id}/recommendations")
+    @GetMapping("/recommendations/{id}")
     public ResponseEntity<List<ProductDTO>> getRecommendations(@PathVariable Long id) {
         List<ProductDTO> recommendations = productService.getRecommendations(id);
         return ResponseEntity.ok(recommendations);
