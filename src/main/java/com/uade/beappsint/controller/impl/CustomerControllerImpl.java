@@ -49,6 +49,18 @@ public class CustomerControllerImpl implements CustomerController {
                 .body(customerService.editCustomerInfo(requestDTO));
     }
 
+    @PostMapping("/markAsFavorite/{customerId}")
+    public ResponseEntity<String> markProductAsFavorite(@PathVariable Integer customerId, @RequestBody ProductDTO productDTO) {
+        Long productID = productDTO.getId();
+        boolean isAdded = customerService.markProductAsFavorite(customerId, productID);
+        if (isAdded) {
+            return ResponseEntity.ok("Producto marcado como favorito exitosamente.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("No se pudo marcar el producto como favorito.");
+        }
+    }
+
     @GetMapping("favorites/{customerId}")
     public ResponseEntity<List<ProductDTO>> getFavoriteProducts(@PathVariable Integer customerId) {
         List<ProductDTO> favoriteProducts = customerService.getFavoriteProducts(customerId);

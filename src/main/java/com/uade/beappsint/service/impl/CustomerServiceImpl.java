@@ -22,6 +22,7 @@ import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.CustomerService;
 import com.uade.beappsint.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,10 +34,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
-    private final AdminRequestRepository adminRequestRepository;
     private final ProductService productService;
-    private final ReviewRepository reviewRepository;
     private final AuthService authService;
+    private final AdminRequestRepository adminRequestRepository;
+    private final ReviewRepository reviewRepository;
 
     public KycResponseDTO basicKyc(KycBasicRequestDTO kycBasicRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
@@ -46,7 +47,6 @@ public class CustomerServiceImpl implements CustomerService {
         int minAge = 18;
         boolean validDateOfBirth = kycBasicRequestDTO.getDateOfBirth() != null && Period.between(kycBasicRequestDTO.getDateOfBirth(), LocalDate.now()).getYears() >= minAge;
         if (!validDateOfBirth) throw new BadRequestException("Customer must be at least " + minAge + " years old.");
-
         customer.setFirstname(kycBasicRequestDTO.getFirstname());
         customer.setLastname(kycBasicRequestDTO.getLastname());
         customer.setDateOfBirth(kycBasicRequestDTO.getDateOfBirth());
@@ -85,6 +85,11 @@ public class CustomerServiceImpl implements CustomerService {
         return savedCustomer.toDto();
     }
 
+    public boolean markProductAsFavorite(Integer customerId, Long productId) {
+        int result = customerRepository.addFavoriteProduct(customerId, productId);
+        return result > 0;
+    }
+
     public List<ProductDTO> getFavoriteProducts(Integer customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
@@ -117,7 +122,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = adminRequest.getCustomer();
         customer.setAdmin(true);
         customerRepository.save(customer);
-
         return adminRequest.toDTO();
     }
 
@@ -150,12 +154,11 @@ public class CustomerServiceImpl implements CustomerService {
         return adminRequestRepository.findByApprovedFalse().stream().map(AdminRequest::toDTO).collect(Collectors.toList());
     }
 
-    private Customer assertAdmin() {
+    private void assertAdmin() {
         Customer customer = authService.getAuthenticatedCustomer();
         if (!customer.isAdmin()) {
             throw new RuntimeException("Access denied: only administrators can perform this action.");
         }
-        return customer;
     }
 
 }

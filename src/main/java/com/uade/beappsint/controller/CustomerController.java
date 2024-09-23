@@ -25,6 +25,9 @@ public interface CustomerController {
     @Operation(summary = "Profile info edition", description = "Allows certain profile info to be updated in the system")
     ResponseEntity<CustomerInfoDTO> editCustomerInfo(ProfileEditionDTO requestDTO);
 
+    @Operation(summary = "Mark product as favorite", description = "Marks a product as favorite for a customer")
+    ResponseEntity<String> markProductAsFavorite(Integer customerId, ProductDTO productDTO);
+
     @Operation(summary = "Get favorite products", description = "Retrieves the favorite products of a customer")
     ResponseEntity<List<ProductDTO>> getFavoriteProducts(Integer customerId);
 

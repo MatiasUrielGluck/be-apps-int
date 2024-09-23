@@ -8,7 +8,6 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
-import com.uade.beappsint.entity.AdminRequest;
 
 import java.util.List;
 
@@ -18,6 +17,8 @@ public interface CustomerService {
     KycResponseDTO residentialKyc(KycResidentialRequestDTO kycResidentialRequestDTO);
 
     CustomerInfoDTO editCustomerInfo(ProfileEditionDTO requestDTO);
+
+    boolean markProductAsFavorite(Integer customerId, Long productId);
 
     List<ProductDTO> getFavoriteProducts(Integer customerId);
 
