@@ -31,6 +31,6 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Product p SET p.images = CONCAT(p.images, ?1) WHERE p.id = ?2")
-    void addImageToProduct(Image image, Long productId);
+    @Query("UPDATE Product p SET p.imageUrl = :imageUrl WHERE p.id = :id")
+    void addImageToProduct(@Param("imageUrl") String imageUrl, @Param("id") Long id);
 }

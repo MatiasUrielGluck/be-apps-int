@@ -145,12 +145,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public void addImageToProduct(Long productId, ImageDTO imageDTO) {
-        Image image = new Image();
-        image.setUrl(imageDTO.getUrl());
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
-        image.setProduct(product);
-        productRepository.addImageToProduct(image, productId);
+        productRepository.addImageToProduct(imageDTO.getUrl(), productId);
     }
 
 }
