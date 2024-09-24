@@ -1,6 +1,5 @@
 package com.uade.beappsint.dto.transaction;
 
-import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +15,6 @@ public class TransactionDTO {
     private LocalDate date;
     private Double amountUSD;
     private Double amountARS;
-    private List<ProductDTO> products;
+    private Double conversionRate;
+    private List<TransactionItemDTO> items;
 }

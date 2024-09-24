@@ -107,7 +107,6 @@ public class CartServiceImpl implements CartService {
             productRepository.save(product);
         });
 
-        clearCart();
         return cart.toDTO();
     }
 
