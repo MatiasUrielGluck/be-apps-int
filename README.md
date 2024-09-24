@@ -1,6 +1,17 @@
 # E-Commerce Web Application - Backend
 
+![](Imagenes/LogoUADE.svg)
+
 Este proyecto corresponde a la primera entrega del Trabajo Práctico Obligatorio (TPO) de la materia **Aplicaciones Interactivas** del segundo cuatrimestre de 2024, desarrollado en el marco de la carrera Ingeniería Informática de la UADE. Se trata del desarrollo del backend de una aplicación de e-commerce, implementada utilizando **Java Spring Boot**. La aplicación tiene como objetivo cubrir los requerimientos académicos solicitados en la cursada, por lo que no responde a una necesidad comercial real, sino que se enmarca en un contexto académico.
+
+## Integrantes
+- Álvarez Tomás
+- Gluck Matías
+- Massi Franco
+- Medina Tobias
+
+## Fecha de Presentación
+Martes 24/9/2024
 
 ## Tecnologías utilizadas
 
