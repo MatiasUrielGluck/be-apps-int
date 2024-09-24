@@ -6,6 +6,8 @@ import com.uade.beappsint.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -49,6 +51,13 @@ public interface ProductController {
             description = "Retrieves all images that are associated with a specific product ID. This is useful for displaying multiple views of a product."
     )
     ResponseEntity<List<ImageDTO>> getImagesByProductId(Long productId);
+
+
+    @Operation(
+            summary = "Change the main image of a product",
+            description = "Allows the user to add a new image to the specified product. This method accepts an ImageDTO object representing the image to be added."
+    )
+    ResponseEntity<Void> changeImageOfProduct(Long productId, ImageDTO imageDTO);
 
     @Operation(
             summary = "Add an image to a product",

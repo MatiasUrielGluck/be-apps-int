@@ -38,4 +38,6 @@ public interface ProductService {
 
     void addImageToProduct(Long productId, ImageDTO imageDTO);
 
+    void changeMainImageOfProduct(Long productId, ImageDTO imageDTO);
+
 }

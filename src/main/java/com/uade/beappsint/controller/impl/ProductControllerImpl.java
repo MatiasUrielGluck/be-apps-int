@@ -88,7 +88,13 @@ public class ProductControllerImpl implements ProductController {
         return ResponseEntity.ok(images);
     }
 
-    @PostMapping("/{productId}/images")
+    @PostMapping("change/{productId}/images")
+    public ResponseEntity<Void> changeImageOfProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
+        productService.changeMainImageOfProduct(productId, imageDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("post/{productId}/images")
     public ResponseEntity<Void> addImageToProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
         productService.addImageToProduct(productId, imageDTO);
         return ResponseEntity.ok().build();
