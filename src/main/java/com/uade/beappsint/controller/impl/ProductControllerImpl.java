@@ -1,6 +1,7 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.ProductController;
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.service.ProductService;
@@ -79,6 +80,18 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<List<ProductDTO>> getRecommendations(@PathVariable Long id) {
         List<ProductDTO> recommendations = productService.getRecommendations(id);
         return ResponseEntity.ok(recommendations);
+    }
+
+    @GetMapping("/{productId}/images")
+    public ResponseEntity<List<ImageDTO>> getImagesByProductId(@PathVariable Long productId) {
+        List<ImageDTO> images = productService.getImagesByProductId(productId);
+        return ResponseEntity.ok(images);
+    }
+
+    @PostMapping("/{productId}/images")
+    public ResponseEntity<Void> addImageToProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
+        productService.addImageToProduct(productId, imageDTO);
+        return ResponseEntity.ok().build();
     }
 
 }

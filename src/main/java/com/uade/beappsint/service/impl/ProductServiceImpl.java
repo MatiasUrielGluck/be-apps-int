@@ -1,8 +1,10 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
+import com.uade.beappsint.entity.Image;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.CustomerRepository;
@@ -133,6 +135,22 @@ public class ProductServiceImpl implements ProductService {
         return recommendations.stream()
                 .map(Product::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public List<ImageDTO> getImagesByProductId(Long productId) {
+        List<Image> images = productRepository.findImagesByProductId(productId);
+        return images.stream()
+                .map(Image::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public void addImageToProduct(Long productId, ImageDTO imageDTO) {
+        Image image = new Image();
+        image.setUrl(imageDTO.getUrl());
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        image.setProduct(product);
+        productRepository.addImageToProduct(image, productId);
     }
 
 }

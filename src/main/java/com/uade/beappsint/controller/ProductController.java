@@ -1,5 +1,6 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,4 +43,16 @@ public interface ProductController {
 
     @Operation(summary = "Get product recommendations", description = "Get recommendations for a product based on genre, decade, and director.")
     ResponseEntity<List<ProductDTO>> getRecommendations(Long id);
+
+    @Operation(
+            summary = "Get images associated with a product",
+            description = "Retrieves all images that are associated with a specific product ID. This is useful for displaying multiple views of a product."
+    )
+    ResponseEntity<List<ImageDTO>> getImagesByProductId(Long productId);
+
+    @Operation(
+            summary = "Add an image to a product",
+            description = "Allows the user to add a new image to the specified product. This method accepts an ImageDTO object representing the image to be added."
+    )
+    ResponseEntity<Void> addImageToProduct(Long productId, ImageDTO imageDTO);
 }

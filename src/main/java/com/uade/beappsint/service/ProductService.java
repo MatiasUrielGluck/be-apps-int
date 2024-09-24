@@ -1,5 +1,6 @@
 package com.uade.beappsint.service;
 
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
@@ -31,5 +32,10 @@ public interface ProductService {
 
     List<ProductDTO> searchProductsByName(String partialName);
 
-    List<ProductDTO> getRecommendations(Long productId);
+    List<ProductDTO> getRecommendations(Long id);
+
+    List<ImageDTO> getImagesByProductId(Long productId);
+
+    void addImageToProduct(Long productId, ImageDTO imageDTO);
+
 }
