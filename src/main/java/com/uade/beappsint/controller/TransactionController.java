@@ -5,17 +5,25 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 @Tag(name = "Transaction", description = "Endpoints for the transaction system")
 public interface TransactionController {
     @Operation(
-            summary = "Initialize a transaction",
-            description = "Creates the transaction in the system without concreting it. Returns the transaction so that the user can review it and then confirm it."
+            summary = "Creates a transaction",
+            description = "Creates the transaction in the system."
     )
-    ResponseEntity<TransactionDTO> initializeTransaction();
+    ResponseEntity<TransactionDTO> createTransaction();
 
     @Operation(
-            summary = "Confirm a transaction",
-            description = "Handle the payment confirming the transaction."
+            summary = "Get all users transactions summarized.",
+            description = "Gets the basic info of all transactions."
     )
-    ResponseEntity<TransactionDTO> confirmTransaction(Long transactionId);
+    ResponseEntity<List<TransactionDTO>> getTransactions();
+
+    @Operation(
+            summary = "Get users transaction by id.",
+            description = "Returns all the transaction information fetching the each item detail."
+    )
+    ResponseEntity<TransactionDTO> getTransactionById(Long id);
 }

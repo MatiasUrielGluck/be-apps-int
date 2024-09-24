@@ -13,7 +13,5 @@ public interface CartController {
 
     ResponseEntity<CartDTO> clearCart();
 
-    ResponseEntity<CartDTO> checkoutCart();
-
     ResponseEntity<CartDTO> getCart();
 }
