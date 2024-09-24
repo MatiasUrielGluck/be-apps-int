@@ -7,6 +7,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Entity representing a product.
+ * Contains product details such as ID, name, description, stock, price, category, image URL, views, year, director, and the creator.
+ */
 @Entity
 @Table(name = "product")
 @Data
@@ -49,6 +53,11 @@ public class Product {
     @JoinColumn(name = "created_by")
     private Customer createdBy;
 
+    /**
+     * Converts the product entity to a ProductDTO.
+     *
+     * @return a ProductDTO containing the product's information.
+     */
     public ProductDTO toDTO() {
         return ProductDTO.builder()
                 .id(this.id)

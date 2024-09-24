@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for KYC (Know Your Customer) residential requests.
+ * Contains the street name, street number, complementary address, and phone number required for the KYC process.
+ */
 @Data
 @Builder
 public class KycResidentialRequestDTO {

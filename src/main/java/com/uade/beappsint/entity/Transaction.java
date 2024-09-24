@@ -6,6 +6,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ * Entity representing a transaction.
+ * Contains transaction details such as ID, customer, date, amounts in USD and ARS, conversion rate, payment status, and products.
+ */
 @Entity
 @Data
 @Builder
@@ -31,6 +35,11 @@ public class Transaction {
     @Column(name = "conversion_rate")
     private Double conversionRate;
 
+    /**
+     * Converts the transaction entity to a TransactionDTO.
+     *
+     * @return a TransactionDTO containing the transaction's information.
+     */
     public TransactionDTO toDTO() {
         return TransactionDTO.builder()
                 .id(id)

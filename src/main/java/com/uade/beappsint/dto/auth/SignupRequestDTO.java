@@ -6,6 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
+/**
+ * Data Transfer Object for signup requests.
+ * Contains the email and password required for user registration.
+ */
 @Data
 @Builder
 public class SignupRequestDTO {

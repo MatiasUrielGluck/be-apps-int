@@ -4,6 +4,9 @@ import com.uade.beappsint.dto.cart.AddRequestDTO;
 import com.uade.beappsint.dto.cart.CartDTO;
 import com.uade.beappsint.entity.Cart;
 
+/**
+ * Service interface for cart-related operations.
+ */
 public interface CartService {
     CartDTO addProductToCart(AddRequestDTO addRequestDTO);
 

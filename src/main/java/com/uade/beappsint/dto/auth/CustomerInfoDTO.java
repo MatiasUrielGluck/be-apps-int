@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object for customer information.
+ * Contains basic and residential information about the customer.
+ */
 @Data
 @Builder
 public class CustomerInfoDTO {

@@ -16,6 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Implementation of the AuthService interface.
+ * Provides methods for handling authentication and authorization.
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -24,6 +28,14 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Registers a new customer.
+     *
+     * @param request the signup request data transfer object
+     * @return the signup response data transfer object
+     * @throws UserAlreadyExistsException if a customer with the given email already exists
+     * @throws BadRequestException if the password is not provided
+     */
     public SignupResponseDTO signup(SignupRequestDTO request) {
         if (customerRepository.existsByEmail(request.getEmail())) throw new UserAlreadyExistsException(request.getEmail());
         if (request.getPassword() == null) throw new BadRequestException("Password is required.");
@@ -42,6 +54,12 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    /**
+     * Authenticates a customer and generates a JWT token.
+     *
+     * @param request the login request data transfer object
+     * @return the login response data transfer object
+     */
     public LoginResponseDTO login(LoginRequestDTO request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -60,11 +78,21 @@ public class AuthServiceImpl implements AuthService {
                 .build();
     }
 
+    /**
+     * Retrieves the authenticated customer.
+     *
+     * @return the authenticated customer
+     */
     public Customer getAuthenticatedCustomer() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (Customer) authentication.getPrincipal();
     }
 
+    /**
+     * Retrieves the information of the authenticated customer.
+     *
+     * @return the customer information data transfer object
+     */
     public CustomerInfoDTO getCustomerInfo() {
         return getAuthenticatedCustomer().toDto();
     }

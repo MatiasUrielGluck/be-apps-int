@@ -6,6 +6,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object (DTO) representing a shopping cart.
+ * Contains the cart ID, list of cart items, and the total price of the cart.
+ */
 @Data
 @Builder
 public class CartDTO {

@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Implementation of the TransactionController interface.
+ * Provides endpoints for initializing and confirming transactions.
+ */
 @RestController
 @RequestMapping("/api/transaction")
 @RequiredArgsConstructor

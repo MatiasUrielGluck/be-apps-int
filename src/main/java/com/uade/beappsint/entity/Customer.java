@@ -14,6 +14,11 @@ import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * Entity representing a customer.
+ * Implements UserDetails for Spring Security integration.
+ * Contains customer details such as name, email, password, date of birth, KYC status, address, phone number, and recently viewed products.
+ */
 @Entity
 @Table(name = "customer")
 @Data
@@ -65,36 +70,71 @@ public class Customer implements UserDetails {
     )
     private List<Product> recentlyViewedProducts;
 
+    /**
+     * Returns the authorities granted to the customer.
+     *
+     * @return an empty list of authorities.
+     */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
     }
 
+    /**
+     * Returns the username used to authenticate the customer.
+     *
+     * @return the email of the customer.
+     */
     @Override
     public String getUsername() {
         return email;
     }
 
+    /**
+     * Indicates whether the customer's account has expired.
+     *
+     * @return true if the account is non-expired, false otherwise.
+     */
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    /**
+     * Indicates whether the customer's account is locked.
+     *
+     * @return true if the account is non-locked, false otherwise.
+     */
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    /**
+     * Indicates whether the customer's credentials have expired.
+     *
+     * @return true if the credentials are non-expired, false otherwise.
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    /**
+     * Indicates whether the customer is enabled.
+     *
+     * @return true if the customer is enabled, false otherwise.
+     */
     @Override
     public boolean isEnabled() {
         return true;
     }
 
+    /**
+     * Converts the customer entity to a CustomerInfoDTO.
+     *
+     * @return a CustomerInfoDTO containing the customer's information.
+     */
     public CustomerInfoDTO toDto() {
         return CustomerInfoDTO.builder()
                 .id(this.id)
