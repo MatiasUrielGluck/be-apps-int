@@ -9,8 +9,6 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
-import com.uade.beappsint.entity.AdminRequest;
-import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,7 +48,7 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PostMapping("/markAsFavorite/{customerId}")
-    public ResponseEntity<String> markProductAsFavorite(@PathVariable Integer customerId, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<String> markProductAsFavorite(@PathVariable @Validated Integer customerId, @RequestBody @Validated ProductDTO productDTO) {
         Long productID = productDTO.getId();
         boolean isAdded = customerService.markProductAsFavorite(customerId, productID);
         if (isAdded) {
@@ -62,19 +60,19 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @GetMapping("favorites/{customerId}")
-    public ResponseEntity<List<ProductDTO>> getFavoriteProducts(@PathVariable Integer customerId) {
+    public ResponseEntity<List<ProductDTO>> getFavoriteProducts(@PathVariable @Validated Integer customerId) {
         List<ProductDTO> favoriteProducts = customerService.getFavoriteProducts(customerId);
         return ResponseEntity.status(HttpStatus.OK).body(favoriteProducts);
     }
 
     @PostMapping("/{customerId}/admin-request")
-    public ResponseEntity<AdminRequestDTO> requestAdminRole(@PathVariable Integer customerId) {
+    public ResponseEntity<AdminRequestDTO> requestAdminRole(@PathVariable @Validated Integer customerId) {
         AdminRequestDTO adminRequestDTO = customerService.requestAdminRole(customerId);
         return ResponseEntity.status(HttpStatus.CREATED).body(adminRequestDTO);
     }
 
     @PutMapping("/admin/approve/{requestId}")
-    public ResponseEntity<AdminRequestDTO> approveAdminRequest(@PathVariable Integer requestId) {
+    public ResponseEntity<AdminRequestDTO> approveAdminRequest(@PathVariable @Validated Integer requestId) {
         AdminRequestDTO adminRequestDTO = customerService.approveAdminRequest(requestId);
         return ResponseEntity.status(HttpStatus.OK).body(adminRequestDTO);
     }
@@ -86,13 +84,13 @@ public class CustomerControllerImpl implements CustomerController {
     }
 
     @PostMapping("addReview/{customerId}")
-    public ResponseEntity<ReviewDTO> addReview(@PathVariable Integer customerId, @RequestBody ReviewDTO reviewDTO) {
+    public ResponseEntity<ReviewDTO> addReview(@PathVariable @Validated Integer customerId, @RequestBody @Validated ReviewDTO reviewDTO) {
         ReviewDTO createdReview = customerService.addReview(customerId, reviewDTO);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
 
     @GetMapping("/products/{productId}/reviews")
-    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable Long productId) {
+    public ResponseEntity<List<ReviewDTO>> getReviewsByProductId(@PathVariable @Validated Long productId) {
         List<ReviewDTO> reviews = customerService.getReviewsByProductId(productId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }

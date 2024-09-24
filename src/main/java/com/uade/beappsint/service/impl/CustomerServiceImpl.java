@@ -86,11 +86,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public boolean markProductAsFavorite(Integer customerId, Long productId) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
         int result = customerRepository.addFavoriteProduct(customerId, productId);
         return result > 0;
     }
 
     public List<ProductDTO> getFavoriteProducts(Integer customerId) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         return customerRepository.findFavoriteProductsByCustomerId(customer.getId()).stream()
@@ -99,6 +105,10 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public AdminRequestDTO requestAdminRole(Integer customerId) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
+
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         AdminRequest adminRequest = new AdminRequest();
@@ -126,6 +136,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public ReviewDTO addReview(Integer customerId, ReviewDTO reviewDTO) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
         Review review = new Review();
         Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         ProductDTO productDTO = productService.getProductById(reviewDTO.getProductId());
@@ -145,11 +158,17 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public List<ReviewDTO> getReviewsByProductId(Long productId) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
         List<Review> reviews = reviewRepository.findByProductId(productId);
         return reviews.stream().map(Review::toDTO).collect(Collectors.toList());
     }
 
     public List<AdminRequestDTO> getPendingAdminRequests() {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
+        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
+            throw new BadRequestException("Kyc stage already completed.");
         assertAdmin();
         return adminRequestRepository.findByApprovedFalse().stream().map(AdminRequest::toDTO).collect(Collectors.toList());
     }
