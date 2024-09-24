@@ -3,7 +3,6 @@ package com.uade.beappsint.controller.impl;
 import com.uade.beappsint.controller.CartController;
 import com.uade.beappsint.dto.cart.AddRequestDTO;
 import com.uade.beappsint.dto.cart.CartDTO;
-import com.uade.beappsint.entity.Cart;
 import com.uade.beappsint.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,11 +32,6 @@ public class CartControllerImpl implements CartController {
     @DeleteMapping("/clear")
     public ResponseEntity<CartDTO> clearCart() {
         return ResponseEntity.ok(cartService.clearCart());
-    }
-
-    @PostMapping("/checkout")
-    public ResponseEntity<CartDTO> checkoutCart() {
-        return ResponseEntity.ok(cartService.checkoutCart());
     }
 
     @GetMapping()

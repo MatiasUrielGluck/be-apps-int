@@ -2,8 +2,12 @@ package com.uade.beappsint.service;
 
 import com.uade.beappsint.dto.transaction.TransactionDTO;
 
-public interface TransactionService {
-    TransactionDTO initializeTransaction();
+import java.util.List;
 
-    TransactionDTO confirmTransaction(Long transactionId);
+public interface TransactionService {
+    TransactionDTO createTransaction();
+
+    List<TransactionDTO> getTransactions();
+
+    TransactionDTO getTransactionById(Long id);
 }
