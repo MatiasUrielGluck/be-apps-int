@@ -6,10 +6,9 @@ import com.uade.beappsint.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Implementation of the TransactionController interface.
@@ -21,31 +20,24 @@ import org.springframework.web.bind.annotation.RestController;
 public class TransactionControllerImpl implements TransactionController {
     private final TransactionService transactionService;
 
-    /**
-     * Initializes a transaction.
-     * Creates the transaction in the system without concreting it.
-     * Returns the transaction so that the user can review it and then confirm it.
-     *
-     * @return a ResponseEntity containing the transaction data transfer object
-     */
-    @PostMapping("/initialize")
-    public ResponseEntity<TransactionDTO> initializeTransaction() {
+    @PostMapping()
+    public ResponseEntity<TransactionDTO> createTransaction() {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(transactionService.initializeTransaction());
+                .body(transactionService.createTransaction());
     }
 
-    /**
-     * Confirms a transaction.
-     * Handles the payment confirming the transaction.
-     *
-     * @param transactionId the ID of the transaction to confirm
-     * @return a ResponseEntity containing the confirmed transaction data transfer object
-     */
-    @PostMapping("/confirm/{transactionId}")
-    public ResponseEntity<TransactionDTO> confirmTransaction(@PathVariable Long transactionId) {
+    @GetMapping()
+    public ResponseEntity<List<TransactionDTO>> getTransactions() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(transactionService.confirmTransaction(transactionId));
+                .body(transactionService.getTransactions());
+    }
+
+    @GetMapping("{id}")
+    public ResponseEntity<TransactionDTO> getTransactionById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(transactionService.getTransactionById(id));
     }
 }
