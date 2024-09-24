@@ -95,6 +95,14 @@ public class Customer implements UserDetails {
         return true;
     }
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "customer_favorite_products",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id")
+    )
+    private List<Product> favoriteProducts;
+
     public CustomerInfoDTO toDto() {
         return CustomerInfoDTO.builder()
                 .id(this.id)

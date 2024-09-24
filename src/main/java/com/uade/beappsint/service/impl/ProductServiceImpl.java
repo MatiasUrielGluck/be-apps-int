@@ -1,17 +1,25 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
+import com.uade.beappsint.entity.Image;
 import com.uade.beappsint.exception.BadRequestException;
+import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.CustomerRepository;
+import com.uade.beappsint.repository.ImageRepository;
 import com.uade.beappsint.repository.ProductRepository;
 import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.ProductService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,6 +27,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CustomerRepository customerRepository;
+    private final ImageRepository imageRepository;
     private final AuthService authService;
 
     public List<ProductDTO> getAllProducts() {
@@ -109,4 +118,58 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException("Access denied: you are not the creator of this product.");
         }
     }
+
+    public List<ProductDTO> searchProductsByName(String partialName) {
+        List<Product> products = productRepository.findByNameContainingIgnoreCase(partialName);
+        return products.stream().map(Product::toDTO).collect(Collectors.toList());
+    }
+
+    public List<ProductDTO> getRecommendations(Long productId) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        List<Product> recommendationsByCategory = productRepository.findRecommendationsByCategory(product.getCategory(), productId);
+        List<Product> recommendationsByDecade = productRepository.findRecommendationsByDecade(product.getYear() - 10, product.getYear(), productId);
+        List<Product> recommendationsByDirector = productRepository.findRecommendationsByDirector(product.getDirector(), productId);
+
+        Set<Product> recommendations = new HashSet<>(recommendationsByCategory);
+        recommendations.addAll(recommendationsByDecade);
+        recommendations.addAll(recommendationsByDirector);
+
+        return recommendations.stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<ImageDTO> getImagesByProductId(Long productId) {
+        List<Image> images = productRepository.findImagesByProductId(productId);
+        return images.stream()
+                .map(Image::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void addImageToProduct(Long productId, ImageDTO imageDTO) {
+
+        Customer customer = assertAdmin();
+        isProductCreator(productId, customer);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        Image newImage = new Image();
+        newImage.setUrl(imageDTO.getUrl());
+        newImage.setProduct(product);
+
+        imageRepository.save(newImage);
+    }
+
+    public void changeMainImageOfProduct(Long productId, ImageDTO imageDTO) {
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        Customer customer = assertAdmin();
+        isProductCreator(productId, customer);
+        productRepository.addImageToProduct(imageDTO.getUrl(), productId);
+    }
+
 }

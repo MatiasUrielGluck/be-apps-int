@@ -1,6 +1,7 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.ProductController;
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.service.ProductService;
@@ -68,4 +69,35 @@ public class ProductControllerImpl implements ProductController {
         List<ProductDTO> recentlyViewedProducts = productService.getRecentlyViewedProducts();
         return ResponseEntity.ok(recentlyViewedProducts);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductDTO>> searchProductsByName(@RequestParam String partialName) {
+        List<ProductDTO> products = productService.searchProductsByName(partialName);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/recommendations/{id}")
+    public ResponseEntity<List<ProductDTO>> getRecommendations(@PathVariable Long id) {
+        List<ProductDTO> recommendations = productService.getRecommendations(id);
+        return ResponseEntity.ok(recommendations);
+    }
+
+    @GetMapping("/{productId}/images")
+    public ResponseEntity<List<ImageDTO>> getImagesByProductId(@PathVariable Long productId) {
+        List<ImageDTO> images = productService.getImagesByProductId(productId);
+        return ResponseEntity.ok(images);
+    }
+
+    @PostMapping("change/{productId}/images")
+    public ResponseEntity<Void> changeImageOfProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
+        productService.changeMainImageOfProduct(productId, imageDTO);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("post/{productId}/images")
+    public ResponseEntity<Void> addImageToProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
+        productService.addImageToProduct(productId, imageDTO);
+        return ResponseEntity.ok().build();
+    }
+
 }

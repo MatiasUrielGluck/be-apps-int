@@ -1,10 +1,13 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -36,4 +39,29 @@ public interface ProductController {
 
     @Operation(summary = "Return the user's recently viewed products", description = "Return the user's recently viewed products.")
     ResponseEntity<List<ProductDTO>> getRecentlyViewedProducts();
+
+    @Operation(summary = "Search products by name", description = "Returns products that match the given partial name.")
+    ResponseEntity<List<ProductDTO>> searchProductsByName(String partialName);
+
+    @Operation(summary = "Get product recommendations", description = "Get recommendations for a product based on genre, decade, and director.")
+    ResponseEntity<List<ProductDTO>> getRecommendations(Long id);
+
+    @Operation(
+            summary = "Get images associated with a product",
+            description = "Retrieves all images that are associated with a specific product ID. This is useful for displaying multiple views of a product."
+    )
+    ResponseEntity<List<ImageDTO>> getImagesByProductId(Long productId);
+
+
+    @Operation(
+            summary = "Change the main image of a product",
+            description = "Allows the user to add a new image to the specified product. This method accepts an ImageDTO object representing the image to be added."
+    )
+    ResponseEntity<Void> changeImageOfProduct(Long productId, ImageDTO imageDTO);
+
+    @Operation(
+            summary = "Add an image to a product",
+            description = "Allows the user to add a new image to the specified product. This method accepts an ImageDTO object representing the image to be added."
+    )
+    ResponseEntity<Void> addImageToProduct(Long productId, ImageDTO imageDTO);
 }

@@ -7,6 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "product")
 @Data
@@ -48,6 +51,9 @@ public class Product {
     @ManyToOne
     @JoinColumn(name = "created_by")
     private Customer createdBy;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Image> images;
 
     public ProductDTO toDTO() {
         return ProductDTO.builder()
