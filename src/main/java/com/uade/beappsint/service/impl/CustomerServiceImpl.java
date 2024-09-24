@@ -22,9 +22,7 @@ import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.CustomerService;
 import com.uade.beappsint.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
