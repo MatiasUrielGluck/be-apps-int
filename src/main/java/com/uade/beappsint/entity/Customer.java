@@ -114,6 +114,8 @@ public class Customer implements UserDetails {
                 .streetNumber(this.streetNumber)
                 .complementaryAddress(this.complementaryAddress)
                 .phoneNumber(this.phoneNumber)
+                .isAdmin(this.isAdmin)
+                .kycStatus(this.kycStatus)
                 .build();
     }
 }
