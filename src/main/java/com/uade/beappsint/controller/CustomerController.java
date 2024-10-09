@@ -1,6 +1,7 @@
 package com.uade.beappsint.controller;
 
 import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
@@ -8,6 +9,7 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.dto.profile.ThemeDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -45,4 +47,7 @@ public interface CustomerController {
 
     @Operation(summary = "Get reviews by product", description = "Retrieves all reviews for a specific product.")
     ResponseEntity<List<ReviewDTO>> getReviewsByProductId(Long productId);
+
+    @Operation(summary = "Sets the user's preferred theme", description = "Sets the user's preferred theme to be light or dark.")
+    ResponseEntity<GenericResponseDTO> setUsersTheme(ThemeDTO themeDTO);
 }

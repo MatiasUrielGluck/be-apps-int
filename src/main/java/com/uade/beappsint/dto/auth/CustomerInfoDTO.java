@@ -1,6 +1,7 @@
 package com.uade.beappsint.dto.auth;
 
 import com.uade.beappsint.enums.KycStatusEnum;
+import com.uade.beappsint.enums.ThemeEnum;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class CustomerInfoDTO {
     private LocalDate dateOfBirth;
     private Boolean isAdmin;
     private KycStatusEnum kycStatus;
+    private ThemeEnum theme;
 
     // Residential Info
     private String streetName;

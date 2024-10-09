@@ -2,6 +2,7 @@ package com.uade.beappsint.entity;
 
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
 import com.uade.beappsint.enums.KycStatusEnum;
+import com.uade.beappsint.enums.ThemeEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -56,6 +57,9 @@ public class Customer implements UserDetails {
 
     @Column(name = "is_admin")
     private boolean isAdmin;
+
+    @Column(name = "theme")
+    private ThemeEnum theme;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -116,6 +120,7 @@ public class Customer implements UserDetails {
                 .phoneNumber(this.phoneNumber)
                 .isAdmin(this.isAdmin)
                 .kycStatus(this.kycStatus)
+                .theme(this.theme)
                 .build();
     }
 }

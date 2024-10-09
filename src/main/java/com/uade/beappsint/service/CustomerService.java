@@ -1,6 +1,7 @@
 package com.uade.beappsint.service;
 
 import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
@@ -8,6 +9,7 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.dto.profile.ThemeDTO;
 
 import java.util.List;
 
@@ -31,4 +33,6 @@ public interface CustomerService {
     List<ReviewDTO> getReviewsByProductId(Long productId);
 
     List<AdminRequestDTO> getPendingAdminRequests();
+
+    GenericResponseDTO setUsersTheme(ThemeDTO themeDTO);
 }

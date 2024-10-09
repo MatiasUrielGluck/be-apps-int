@@ -2,6 +2,7 @@ package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.CustomerController;
 import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
@@ -9,6 +10,7 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.dto.profile.ThemeDTO;
 import com.uade.beappsint.service.CustomerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -95,4 +97,10 @@ public class CustomerControllerImpl implements CustomerController {
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 
+    @PutMapping("/theme")
+    public ResponseEntity<GenericResponseDTO> setUsersTheme(@RequestBody @Validated ThemeDTO themeDTO) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.setUsersTheme(themeDTO));
+    }
 }
