@@ -113,7 +113,7 @@ public class CartServiceImpl implements CartService {
     @Override
     public CartDTO getUserCart() {
         Customer customer = getAuthenticatedCustomer();
-        Cart cart = getCartByCustomer(customer);
+        Cart cart = getOrCreateCartForCustomer(customer);
         return cart.toDTO();
     }
 
