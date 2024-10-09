@@ -3,6 +3,7 @@ package com.uade.beappsint.service.impl;
 import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.enums.KycStatusEnum;
+import com.uade.beappsint.enums.ThemeEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.UserAlreadyExistsException;
 import com.uade.beappsint.repository.CustomerRepository;
@@ -33,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .kycStatus(KycStatusEnum.BASIC_KYC)
                 .isAdmin(false)
+                .theme(ThemeEnum.DARK)
                 .build();
 
         customerRepository.save(newUser);

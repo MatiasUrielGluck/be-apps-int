@@ -1,6 +1,7 @@
 package com.uade.beappsint.service.impl;
 
 import com.uade.beappsint.dto.AdminRequestDTO;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.dto.ReviewDTO;
 import com.uade.beappsint.dto.auth.CustomerInfoDTO;
@@ -8,6 +9,7 @@ import com.uade.beappsint.dto.kyc.KycBasicRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
+import com.uade.beappsint.dto.profile.ThemeDTO;
 import com.uade.beappsint.entity.AdminRequest;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
@@ -169,6 +171,16 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BadRequestException("Kyc stage already completed.");
         assertAdmin();
         return adminRequestRepository.findByApprovedFalse().stream().map(AdminRequest::toDTO).collect(Collectors.toList());
+    }
+
+    public GenericResponseDTO setUsersTheme(ThemeDTO themeDTO) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        customer.setTheme(themeDTO.getTheme());
+        customerRepository.save(customer);
+
+        return GenericResponseDTO.builder()
+                .message("OK")
+                .build();
     }
 
     private void assertAdmin() {
