@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/auth/login", "/auth/signup", "/api/products/category", "/api/products/featured", "/api/products/search", "/api/products")
+                                .requestMatchers("/auth/login", "/auth/signup", "/api/products/category/*", "/api/products/featured", "/api/products/search", "/api/products")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated())
