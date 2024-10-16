@@ -46,7 +46,7 @@ public class SecurityConfiguration {
                                         "/api/products/category/*",
                                         "/api/products/featured",
                                         "/api/products/search",
-                                        "/api/products/",
+                                        "/api/products",
                                         "/api/products/{id}"
                                 )
                                 .permitAll()
