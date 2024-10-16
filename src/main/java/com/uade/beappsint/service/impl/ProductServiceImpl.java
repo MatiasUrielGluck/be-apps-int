@@ -73,8 +73,16 @@ public class ProductServiceImpl implements ProductService {
         Customer customer = authService.getAuthenticatedCustomer();
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
+        boolean customerAlreadyViewed = !customer.getRecentlyViewedProducts()
+                .stream()
+                .filter(prod -> prod.getId().equals(product.getId()))
+                .toList()
+                .isEmpty();
+
         product.setViews(product.getViews() + 1);
         productRepository.save(product);
+
+        if (customerAlreadyViewed) return;
 
         customer.getRecentlyViewedProducts().add(product);
         customerRepository.save(customer);
