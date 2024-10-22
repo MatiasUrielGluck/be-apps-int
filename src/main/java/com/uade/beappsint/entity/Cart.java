@@ -35,15 +35,18 @@ public class Cart {
     private double totalPrice;
 
     public CartDTO toDTO() {
+        int quantity = 0;
         List<CartItemDTO> mappedCartItems = new ArrayList<>();
         for (CartItem cartItem: cartItems) {
             mappedCartItems.add(cartItem.toDTO());
+            quantity += cartItem.getQuantity();
         }
 
         return CartDTO.builder()
                 .id(this.id)
                 .cartItems(mappedCartItems)
                 .totalPrice(this.totalPrice)
+                .quantity(quantity)
                 .build();
     }
 }
