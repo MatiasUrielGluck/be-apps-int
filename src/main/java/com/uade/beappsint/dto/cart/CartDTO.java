@@ -12,4 +12,5 @@ public class CartDTO {
     private Long id;
     private List<CartItemDTO> cartItems;
     private double totalPrice;
+    private int quantity;
 }
