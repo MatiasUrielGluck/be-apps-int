@@ -35,4 +35,10 @@ public interface CustomerService {
     List<AdminRequestDTO> getPendingAdminRequests();
 
     GenericResponseDTO setUsersTheme(ThemeDTO themeDTO);
+
+    List<CustomerInfoDTO> getRegisteredUsers();
+
+    GenericResponseDTO deleteUser(Integer id);
+
+    GenericResponseDTO toggleAdmin(Integer id);
 }

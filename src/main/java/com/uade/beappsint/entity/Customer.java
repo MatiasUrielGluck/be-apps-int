@@ -61,6 +61,9 @@ public class Customer implements UserDetails {
     @Column(name = "theme")
     private ThemeEnum theme;
 
+    @Column(name = "is-enabled")
+    private Boolean isEnabled;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_recently_viewed",
@@ -106,6 +109,10 @@ public class Customer implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
     private List<Product> favoriteProducts;
+
+    public Boolean getIsEnabled() {
+        return isEnabled == null || isEnabled;
+    }
 
     public CustomerInfoDTO toDto() {
         return CustomerInfoDTO.builder()

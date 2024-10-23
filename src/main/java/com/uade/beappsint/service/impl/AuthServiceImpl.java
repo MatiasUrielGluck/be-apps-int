@@ -34,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .kycStatus(KycStatusEnum.BASIC_KYC)
                 .isAdmin(false)
+                .isEnabled(true)
                 .theme(ThemeEnum.DARK)
                 .build();
 
