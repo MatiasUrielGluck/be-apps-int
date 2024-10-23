@@ -50,4 +50,13 @@ public interface CustomerController {
 
     @Operation(summary = "Sets the user's preferred theme", description = "Sets the user's preferred theme to be light or dark.")
     ResponseEntity<GenericResponseDTO> setUsersTheme(ThemeDTO themeDTO);
+
+    @Operation(summary = "If the requester is admin, returns all the registered users in the system", description = "If the requester is admin, returns all the registered users in the system.")
+    ResponseEntity<List<CustomerInfoDTO>> getRegisteredUsers();
+
+    @Operation(summary = "If the requester is admin, is allowed to delete a user", description = "If the requester is admin, is allowed to delete a user")
+    ResponseEntity<GenericResponseDTO> deleteUser(Integer id);
+
+    @Operation(summary = "If the requester is admin, is allowed convert a user into an admin.", description = "If the requester is admin, is allowed convert a user into an admin.")
+    ResponseEntity<GenericResponseDTO> toggleAdmin(Integer id);
 }

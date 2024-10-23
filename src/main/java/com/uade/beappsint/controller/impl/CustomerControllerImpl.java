@@ -103,4 +103,27 @@ public class CustomerControllerImpl implements CustomerController {
                 .status(HttpStatus.OK)
                 .body(customerService.setUsersTheme(themeDTO));
     }
+
+    @GetMapping("/registered")
+    public ResponseEntity<List<CustomerInfoDTO>> getRegisteredUsers() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.getRegisteredUsers());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<GenericResponseDTO> deleteUser(@PathVariable Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.deleteUser(id));
+    }
+
+    @PutMapping("/convert-admin/{id}")
+    public ResponseEntity<GenericResponseDTO> toggleAdmin(@PathVariable Integer id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(customerService.toggleAdmin(id));
+    }
+
+
 }
