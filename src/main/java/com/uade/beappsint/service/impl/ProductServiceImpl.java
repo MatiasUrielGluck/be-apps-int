@@ -66,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long id) {
         assertAdmin();
         isProductCreator(id, authService.getAuthenticatedCustomer());
+        productRepository.deleteAllByProductId(id);
         productRepository.deleteById(id);
     }
 

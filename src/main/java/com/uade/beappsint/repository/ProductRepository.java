@@ -33,4 +33,9 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Transactional
     @Query("UPDATE Product p SET p.imageUrl = :imageUrl WHERE p.id = :id")
     void addImageToProduct(@Param("imageUrl") String imageUrl, @Param("id") Long id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM customer_recently_viewed WHERE product_id = :productId", nativeQuery = true)
+    void deleteAllByProductId(@Param("productId") Long productId);
 }
