@@ -1,5 +1,6 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
@@ -64,4 +65,10 @@ public interface ProductController {
             description = "Allows the user to add a new image to the specified product. This method accepts an ImageDTO object representing the image to be added."
     )
     ResponseEntity<Void> addImageToProduct(Long productId, ImageDTO imageDTO);
+
+    @Operation(
+            summary = "Toggle product favorite status",
+            description = "Toggle product favorite status"
+    )
+    ResponseEntity<GenericResponseDTO> toggleFavorite(Long productId);
 }
