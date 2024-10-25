@@ -42,4 +42,6 @@ public interface ProductService {
     void changeMainImageOfProduct(Long productId, ImageDTO imageDTO);
 
     GenericResponseDTO toggleFavorite(Long productId);
+
+    List<Long> getFavorites();
 }

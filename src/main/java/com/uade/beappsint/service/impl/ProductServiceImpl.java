@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -199,5 +200,17 @@ public class ProductServiceImpl implements ProductService {
         return GenericResponseDTO.builder()
                 .message("OK")
                 .build();
+    }
+
+    public List<Long> getFavorites() {
+        Customer customer = authService.getAuthenticatedCustomer();
+        List<Long> productIdList = new ArrayList<>();
+        List<Product> favoriteProducts = customer.getFavoriteProducts();
+
+        for (Product product : favoriteProducts) {
+            productIdList.add(product.getId());
+        }
+
+        return productIdList;
     }
 }

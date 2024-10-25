@@ -105,4 +105,9 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<GenericResponseDTO> toggleFavorite(@PathVariable Long productId) {
         return ResponseEntity.ok(productService.toggleFavorite(productId));
     }
+
+    @GetMapping("/favorites")
+    public ResponseEntity<List<Long>> getFavorite() {
+        return ResponseEntity.ok(productService.getFavorites());
+    }
 }
