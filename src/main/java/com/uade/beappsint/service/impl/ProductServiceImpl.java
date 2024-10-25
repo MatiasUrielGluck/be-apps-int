@@ -1,5 +1,6 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
@@ -181,4 +182,22 @@ public class ProductServiceImpl implements ProductService {
         productRepository.addImageToProduct(imageDTO.getUrl(), productId);
     }
 
+    public GenericResponseDTO toggleFavorite(Long productId) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException("Product not found"));
+
+        List<Product> favoriteProducts = customer.getFavoriteProducts();
+
+        if (favoriteProducts.stream().anyMatch(prod -> prod.getId().equals(productId))) {
+            customer.setFavoriteProducts(favoriteProducts.stream().filter(prod -> !prod.getId().equals(productId)).collect(Collectors.toList()));
+        } else {
+            favoriteProducts.add(product);
+        }
+
+        customerRepository.save(customer);
+
+        return GenericResponseDTO.builder()
+                .message("OK")
+                .build();
+    }
 }

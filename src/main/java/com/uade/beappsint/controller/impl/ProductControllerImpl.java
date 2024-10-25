@@ -1,6 +1,7 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.ProductController;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Product;
@@ -100,4 +101,8 @@ public class ProductControllerImpl implements ProductController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/{productId}/favorite")
+    public ResponseEntity<GenericResponseDTO> toggleFavorite(@PathVariable Long productId) {
+        return ResponseEntity.ok(productService.toggleFavorite(productId));
+    }
 }
