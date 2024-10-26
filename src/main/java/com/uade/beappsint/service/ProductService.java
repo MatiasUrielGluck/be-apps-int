@@ -1,5 +1,6 @@
 package com.uade.beappsint.service;
 
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
@@ -40,4 +41,7 @@ public interface ProductService {
 
     void changeMainImageOfProduct(Long productId, ImageDTO imageDTO);
 
+    GenericResponseDTO toggleFavorite(Long productId);
+
+    List<Long> getFavorites();
 }

@@ -27,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -180,6 +181,49 @@ public class CustomerServiceImpl implements CustomerService {
 
         return GenericResponseDTO.builder()
                 .message("OK")
+                .build();
+    }
+
+    public List<CustomerInfoDTO> getRegisteredUsers() {
+        Customer authed = authService.getAuthenticatedCustomer();
+        if (!authed.isAdmin()) throw new BadRequestException("Only admins can access this resource!");
+
+        List<Customer> registeredCustomers = (List<Customer>) customerRepository.findAll();
+
+        List<CustomerInfoDTO> customerInfoDTOS = new ArrayList<>();
+        for (Customer customer : registeredCustomers) {
+            if (!customer.getIsEnabled()) continue;
+            customerInfoDTOS.add(customer.toDto());
+        }
+
+        return customerInfoDTOS;
+    }
+
+    public GenericResponseDTO deleteUser(Integer id) {
+        Customer authed = authService.getAuthenticatedCustomer();
+        if (!authed.isAdmin()) throw new BadRequestException("Only admins can access this resource!");
+
+        if (authed.getId().equals(id)) throw new BadRequestException("You are not allowed to delete yourself...");
+
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        customer.setIsEnabled(false);
+        customerRepository.save(customer);
+
+        return GenericResponseDTO.builder()
+                .message("User deleted successfully")
+                .build();
+    }
+
+    public GenericResponseDTO toggleAdmin(Integer id) {
+        Customer authed = authService.getAuthenticatedCustomer();
+        if (!authed.isAdmin()) throw new BadRequestException("Only admins can access this resource!");
+
+        Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        customer.setAdmin(!customer.isAdmin());
+        customerRepository.save(customer);
+
+        return GenericResponseDTO.builder()
+                .message("User admin privileges toggled. Current status: " + customer.isAdmin())
                 .build();
     }
 
