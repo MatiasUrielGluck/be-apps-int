@@ -54,7 +54,7 @@ public class TransactionServiceImpl implements TransactionService {
         List<TransactionDTO> transactionDTOS = new ArrayList<>();
 
         for (Transaction transaction : transactions) {
-            transactionDTOS.add(transaction.toDTO());
+            transactionDTOS.add(getTransactionById(transaction.getId()));
         }
 
         return transactionDTOS;
