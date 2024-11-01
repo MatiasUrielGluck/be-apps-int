@@ -47,7 +47,8 @@ public class SecurityConfiguration {
                                         "/api/products/featured",
                                         "/api/products/search",
                                         "/api/products",
-                                        "/api/products/{id}"
+                                        "/api/products/{id}",
+                                        "/api/products/{productId}/images"
                                 )
                                 .permitAll()
                                 .anyRequest()
