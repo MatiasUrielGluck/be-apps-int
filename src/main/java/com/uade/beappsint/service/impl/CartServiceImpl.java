@@ -128,7 +128,7 @@ public class CartServiceImpl implements CartService {
 
     private void validateStockAvailability(Product product, int requestedAmount) {
         if (product.getStock() < requestedAmount) {
-            throw new BadRequestException("Not enough stock for product: " + product.getName());
+            throw new BadRequestException("Producto agotado: " + product.getName());
         }
     }
 
