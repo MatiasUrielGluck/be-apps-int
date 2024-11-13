@@ -26,6 +26,10 @@ public class TransactionItem {
     @Column(name = "product_id")
     private Long productId;
 
+    @Column(name = "product_name")
+    private String productName;
+
+
     @Column(name = "amount_unit_usd")
     private double amountUnitUSD;
 
@@ -38,6 +42,7 @@ public class TransactionItem {
                 .transactionId(this.transaction.getId())
                 .quantity(this.quantity)
                 .productId(this.productId)
+                .productName(this.productName)
                 .amountUnitUSD(this.amountUnitUSD)
                 .amountUnitARS(this.amountUnitARS)
                 .build();
