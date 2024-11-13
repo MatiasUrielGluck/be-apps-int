@@ -215,6 +215,22 @@ public class ProductServiceImpl implements ProductService {
         imageRepository.save(newImage);
     }
 
+    @Transactional
+    public void addImageToProduct_v2(Long productId, ImageDTO imageDTO) {
+
+        Customer customer = assertAdmin();
+        isProductCreator(productId, customer);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        Image newImage = new Image();
+        newImage.setUrl(cloudinaryService.uploadImageBase64(imageDTO.getUrl()));
+        newImage.setProduct(product);
+
+        imageRepository.save(newImage);
+    }
+
     public void changeMainImageOfProduct(Long productId, ImageDTO imageDTO) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));

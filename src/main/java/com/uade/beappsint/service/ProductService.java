@@ -41,6 +41,8 @@ public interface ProductService {
 
     void addImageToProduct(Long productId, ImageDTO imageDTO);
 
+    void addImageToProduct_v2(Long productId, ImageDTO imageDTO);
+
     void changeMainImageOfProduct(Long productId, ImageDTO imageDTO);
 
     GenericResponseDTO toggleFavorite(Long productId);

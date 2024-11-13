@@ -9,10 +9,7 @@ import com.uade.beappsint.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -89,8 +86,10 @@ public class ProductControllerV2Impl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<Void> addImageToProduct(Long productId, ImageDTO imageDTO) {
-        return null;
+    @PostMapping("post/{productId}/images")
+    public ResponseEntity<Void> addImageToProduct(@PathVariable Long productId, @RequestBody ImageDTO imageDTO) {
+        productService.addImageToProduct_v2(productId, imageDTO);
+        return ResponseEntity.ok().build();
     }
 
     @Override
