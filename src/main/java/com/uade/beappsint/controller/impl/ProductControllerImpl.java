@@ -3,8 +3,8 @@ package com.uade.beappsint.controller.impl;
 import com.uade.beappsint.controller.ProductController;
 import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
+import com.uade.beappsint.dto.Product.ProductRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
-import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +32,12 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody Product product) {
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductRequestDTO product) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.createProduct(product));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO productDetails) {
         return ResponseEntity.ok(productService.updateProduct(id, productDetails));
     }
 

@@ -2,9 +2,9 @@ package com.uade.beappsint.service;
 
 import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
+import com.uade.beappsint.dto.Product.ProductRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
-import com.uade.beappsint.entity.Product;
 
 import java.util.List;
 
@@ -13,9 +13,9 @@ public interface ProductService {
 
     ProductDTO getProductById(Long id);
 
-    ProductDTO createProduct(Product product);
+    ProductDTO createProduct(ProductRequestDTO product);
 
-    ProductDTO updateProduct(Long id, Product productDetails);
+    ProductDTO updateProduct(Long id, ProductRequestDTO productDetails);
 
     void deleteProduct(Long id);
 

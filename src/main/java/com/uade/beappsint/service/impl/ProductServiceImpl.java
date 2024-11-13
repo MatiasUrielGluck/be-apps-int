@@ -2,6 +2,7 @@ package com.uade.beappsint.service.impl;
 
 import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
+import com.uade.beappsint.dto.Product.ProductRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Product;
@@ -44,17 +45,32 @@ public class ProductServiceImpl implements ProductService {
         return product.toDTO();
     }
 
-    public ProductDTO createProduct(Product product) {
+    public ProductDTO createProduct(ProductRequestDTO productRequest) {
         assertAdmin();
-        product.setCreatedBy(authService.getAuthenticatedCustomer());
+        assertProductRequest(productRequest);
+
+        Product product = Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .stock(productRequest.getStock())
+                .price(productRequest.getPrice())
+                .category(productRequest.getCategory())
+                .imageUrl(productRequest.getImageUrl())
+                .year(productRequest.getYear())
+                .director(productRequest.getDirector())
+                .createdBy(authService.getAuthenticatedCustomer())
+                .build();
+
         Product savedProduct = productRepository.save(product);
         return savedProduct.toDTO();
     }
 
-    public ProductDTO updateProduct(Long id, Product productDetails) {
+    public ProductDTO updateProduct(Long id, ProductRequestDTO productDetails) {
         Customer customer = assertAdmin();
         isProductCreator(id, customer);
         Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        assertProductRequest(productDetails);
+
         product.setName(productDetails.getName());
         product.setDescription(productDetails.getDescription());
         product.setStock(productDetails.getStock());
@@ -212,5 +228,27 @@ public class ProductServiceImpl implements ProductService {
         }
 
         return productIdList;
+    }
+
+    public void assertProductRequest(ProductRequestDTO productRequest) throws BadRequestException {
+        if (productRequest.getName() == null || productRequest.getName().isBlank()) {
+            throw new BadRequestException("Product name cannot be empty");
+        }
+
+        if (productRequest.getStock() == null || productRequest.getStock() <= 0) {
+            throw new BadRequestException("Stock cannot be empty or negative");
+        }
+
+        if (productRequest.getPrice() == null || productRequest.getPrice() <= 0) {
+            throw new BadRequestException("Price cannot be empty or negative");
+        }
+
+        if (productRequest.getYear() != null && productRequest.getYear() <= 0) {
+            throw new BadRequestException("Year cannot be negative");
+        }
+
+        if (productRequest.getImageUrl() == null || productRequest.getImageUrl().isBlank()) {
+            throw new BadRequestException("The product must be uploaded with at least one image");
+        }
     }
 }
