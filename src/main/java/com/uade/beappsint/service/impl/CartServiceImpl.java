@@ -34,10 +34,10 @@ public class CartServiceImpl implements CartService {
         Customer customer = getAuthenticatedCustomer();
         Product product = getProductById(addRequestDTO.getProductId());
 
-        validateStockAvailability(product, addRequestDTO.getAmount());
-
         Cart cart = getOrCreateCartForCustomer(customer);
         CartItem cartItem = getOrCreateCartItem(cart, product);
+
+        validateStockAvailability(product, cartItem.getQuantity() + addRequestDTO.getAmount());
 
         updateCartItemQuantity(cartItem, addRequestDTO.getAmount());
         updateCartTotalPrice(cart, product.getPrice() * addRequestDTO.getAmount());
