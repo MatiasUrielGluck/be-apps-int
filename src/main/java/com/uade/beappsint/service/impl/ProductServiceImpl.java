@@ -235,11 +235,11 @@ public class ProductServiceImpl implements ProductService {
             throw new BadRequestException("Product name cannot be empty");
         }
 
-        if (productRequest.getStock() == null || productRequest.getStock() <= 0) {
+        if (productRequest.getStock() == null || productRequest.getStock() < 0) {
             throw new BadRequestException("Stock cannot be empty or negative");
         }
 
-        if (productRequest.getPrice() == null || productRequest.getPrice() <= 0) {
+        if (productRequest.getPrice() == null || productRequest.getPrice() < 0) {
             throw new BadRequestException("Price cannot be empty or negative");
         }
 
