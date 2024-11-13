@@ -15,7 +15,11 @@ public interface ProductService {
 
     ProductDTO createProduct(ProductRequestDTO product);
 
+    ProductDTO createProduct_v2(ProductRequestDTO product);
+
     ProductDTO updateProduct(Long id, ProductRequestDTO productDetails);
+
+    ProductDTO updateProduct_v2(Long id, ProductRequestDTO productDetails);
 
     void deleteProduct(Long id);
 
@@ -39,9 +43,13 @@ public interface ProductService {
 
     void addImageToProduct(Long productId, ImageDTO imageDTO);
 
+    void addImageToProduct_v2(Long productId, ImageDTO imageDTO);
+
     void changeMainImageOfProduct(Long productId, ImageDTO imageDTO);
 
     GenericResponseDTO toggleFavorite(Long productId);
 
     List<Long> getFavorites();
+
+    void removeProductSecondaryImages(Long productId);
 }

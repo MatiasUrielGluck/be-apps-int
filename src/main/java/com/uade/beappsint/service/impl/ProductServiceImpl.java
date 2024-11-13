@@ -13,6 +13,7 @@ import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ImageRepository;
 import com.uade.beappsint.repository.ProductRepository;
 import com.uade.beappsint.service.AuthService;
+import com.uade.beappsint.service.CloudinaryService;
 import com.uade.beappsint.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final CustomerRepository customerRepository;
     private final ImageRepository imageRepository;
     private final AuthService authService;
+    private final CloudinaryService cloudinaryService;
 
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
@@ -65,6 +67,28 @@ public class ProductServiceImpl implements ProductService {
         return savedProduct.toDTO();
     }
 
+    public ProductDTO createProduct_v2(ProductRequestDTO productRequest) {
+        assertAdmin();
+        assertProductRequest(productRequest);
+
+        String cloudinaryUrl = cloudinaryService.uploadImageBase64(productRequest.getImageUrl());
+
+        Product product = Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .stock(productRequest.getStock())
+                .price(productRequest.getPrice())
+                .category(productRequest.getCategory())
+                .imageUrl(cloudinaryUrl)
+                .year(productRequest.getYear() != null ? productRequest.getYear() : 2000)
+                .director(productRequest.getDirector())
+                .createdBy(authService.getAuthenticatedCustomer())
+                .build();
+
+        Product savedProduct = productRepository.save(product);
+        return savedProduct.toDTO();
+    }
+
     public ProductDTO updateProduct(Long id, ProductRequestDTO productDetails) {
         Customer customer = assertAdmin();
         isProductCreator(id, customer);
@@ -77,6 +101,30 @@ public class ProductServiceImpl implements ProductService {
         product.setPrice(productDetails.getPrice());
         product.setCategory(productDetails.getCategory());
         product.setImageUrl(productDetails.getImageUrl());
+        Product updatedProduct = productRepository.save(product);
+        return updatedProduct.toDTO();
+    }
+
+    public ProductDTO updateProduct_v2(Long id, ProductRequestDTO productDetails) {
+        Customer customer = assertAdmin();
+        isProductCreator(id, customer);
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        assertProductRequest(productDetails);
+
+        String imageUrl;
+
+        if (productDetails.getImageUrl() != null) {
+            imageUrl = cloudinaryService.uploadImageBase64(productDetails.getImageUrl());
+        } else {
+            imageUrl = product.getImageUrl();
+        }
+
+        product.setName(productDetails.getName());
+        product.setDescription(productDetails.getDescription());
+        product.setStock(productDetails.getStock());
+        product.setPrice(productDetails.getPrice());
+        product.setCategory(productDetails.getCategory());
+        product.setImageUrl(imageUrl);
         Product updatedProduct = productRepository.save(product);
         return updatedProduct.toDTO();
     }
@@ -191,6 +239,22 @@ public class ProductServiceImpl implements ProductService {
         imageRepository.save(newImage);
     }
 
+    @Transactional
+    public void addImageToProduct_v2(Long productId, ImageDTO imageDTO) {
+
+        Customer customer = assertAdmin();
+        isProductCreator(productId, customer);
+
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product not found"));
+
+        Image newImage = new Image();
+        newImage.setUrl(cloudinaryService.uploadImageBase64(imageDTO.getUrl()));
+        newImage.setProduct(product);
+
+        imageRepository.save(newImage);
+    }
+
     public void changeMainImageOfProduct(Long productId, ImageDTO imageDTO) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -230,6 +294,15 @@ public class ProductServiceImpl implements ProductService {
         return productIdList;
     }
 
+    @Transactional
+    public void removeProductSecondaryImages(Long productId) {
+        Customer customer = assertAdmin();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BadRequestException("Product not found"));
+        isProductCreator(productId, customer);
+        imageRepository.deleteAllByProductId(productId);
+    }
+
     public void assertProductRequest(ProductRequestDTO productRequest) throws BadRequestException {
         if (productRequest.getName() == null || productRequest.getName().isBlank()) {
             throw new BadRequestException("Product name cannot be empty");
@@ -245,10 +318,6 @@ public class ProductServiceImpl implements ProductService {
 
         if (productRequest.getYear() != null && productRequest.getYear() <= 0) {
             throw new BadRequestException("Year cannot be negative");
-        }
-
-        if (productRequest.getImageUrl() == null || productRequest.getImageUrl().isBlank()) {
-            throw new BadRequestException("The product must be uploaded with at least one image");
         }
     }
 }

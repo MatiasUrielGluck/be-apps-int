@@ -110,4 +110,10 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<List<Long>> getFavorite() {
         return ResponseEntity.ok(productService.getFavorites());
     }
+
+    @DeleteMapping("{productId}/images")
+    public ResponseEntity<Void> removeProductSecondaryImages(@PathVariable Long productId) {
+        productService.removeProductSecondaryImages(productId);
+        return ResponseEntity.ok().build();
+    }
 }
