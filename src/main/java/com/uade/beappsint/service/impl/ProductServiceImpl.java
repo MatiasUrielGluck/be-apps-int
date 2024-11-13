@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .category(productRequest.getCategory())
                 .imageUrl(productRequest.getImageUrl())
-                .year(productRequest.getYear())
+                .year(productRequest.getYear() != null ? productRequest.getYear() : 2000)
                 .director(productRequest.getDirector())
                 .createdBy(authService.getAuthenticatedCustomer())
                 .build();
