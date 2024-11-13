@@ -13,6 +13,7 @@ import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ImageRepository;
 import com.uade.beappsint.repository.ProductRepository;
 import com.uade.beappsint.service.AuthService;
+import com.uade.beappsint.service.CloudinaryService;
 import com.uade.beappsint.service.ProductService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class ProductServiceImpl implements ProductService {
     private final CustomerRepository customerRepository;
     private final ImageRepository imageRepository;
     private final AuthService authService;
+    private final CloudinaryService cloudinaryService;
 
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll()
@@ -56,6 +58,28 @@ public class ProductServiceImpl implements ProductService {
                 .price(productRequest.getPrice())
                 .category(productRequest.getCategory())
                 .imageUrl(productRequest.getImageUrl())
+                .year(productRequest.getYear() != null ? productRequest.getYear() : 2000)
+                .director(productRequest.getDirector())
+                .createdBy(authService.getAuthenticatedCustomer())
+                .build();
+
+        Product savedProduct = productRepository.save(product);
+        return savedProduct.toDTO();
+    }
+
+    public ProductDTO createProduct_v2(ProductRequestDTO productRequest) {
+        assertAdmin();
+        assertProductRequest(productRequest);
+
+        String cloudinaryUrl = cloudinaryService.uploadImageBase64(productRequest.getImageUrl());
+
+        Product product = Product.builder()
+                .name(productRequest.getName())
+                .description(productRequest.getDescription())
+                .stock(productRequest.getStock())
+                .price(productRequest.getPrice())
+                .category(productRequest.getCategory())
+                .imageUrl(cloudinaryUrl)
                 .year(productRequest.getYear() != null ? productRequest.getYear() : 2000)
                 .director(productRequest.getDirector())
                 .createdBy(authService.getAuthenticatedCustomer())

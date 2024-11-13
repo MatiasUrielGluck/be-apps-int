@@ -41,13 +41,17 @@ public class ProductServiceTests {
     @Mock
     private AuthService authService;
 
+    @Mock
+    private CloudinaryService cloudinaryService;
+
     @BeforeEach
     void setUp() {
         productRepository = Mockito.mock(ProductRepository.class);
         customerRepository = Mockito.mock(CustomerRepository.class);
         imageRepository = Mockito.mock(ImageRepository.class);
         authService = Mockito.mock(AuthService.class);
-        productService = new ProductServiceImpl(productRepository, customerRepository, imageRepository, authService);
+        cloudinaryService = Mockito.mock(CloudinaryService.class);
+        productService = new ProductServiceImpl(productRepository, customerRepository, imageRepository, authService, cloudinaryService);
     }
 
     @Test
