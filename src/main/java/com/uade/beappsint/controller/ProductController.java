@@ -2,13 +2,11 @@ package com.uade.beappsint.controller;
 
 import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.ImageDTO;
+import com.uade.beappsint.dto.Product.ProductRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
-import com.uade.beappsint.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -21,10 +19,10 @@ public interface ProductController {
     ResponseEntity<ProductDTO> getProductById(Long id);
 
     @Operation(summary = "Create a product", description = "Create a product. Only admins can perform this action.")
-    ResponseEntity<ProductDTO> createProduct(Product product);
+    ResponseEntity<ProductDTO> createProduct(ProductRequestDTO product);
 
     @Operation(summary = "update a product", description = "update a product. Only admins can perform this action.")
-    ResponseEntity<ProductDTO> updateProduct(Long id, Product productDetails);
+    ResponseEntity<ProductDTO> updateProduct(Long id, ProductRequestDTO productDetails);
 
     @Operation(summary = "Delete a product", description = "Delete a product. Only admins can perform this action.")
     ResponseEntity<Void> deleteProduct(Long id);

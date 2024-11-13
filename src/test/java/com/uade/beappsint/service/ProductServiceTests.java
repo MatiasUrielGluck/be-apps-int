@@ -1,16 +1,15 @@
 package com.uade.beappsint.service;
 
 import com.uade.beappsint.dto.ImageDTO;
+import com.uade.beappsint.dto.Product.ProductRequestDTO;
 import com.uade.beappsint.dto.ProductDTO;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.entity.Image;
 import com.uade.beappsint.entity.Product;
 import com.uade.beappsint.exception.BadRequestException;
-import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ImageRepository;
 import com.uade.beappsint.repository.ProductRepository;
-import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.impl.ProductServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -105,14 +104,25 @@ public class ProductServiceTests {
         // Arrange
         Customer mockAdmin = new Customer();
         mockAdmin.setAdmin(true);
+        mockAdmin.setEmail("admin@example.com");
+
+        ProductRequestDTO request = ProductRequestDTO.builder()
+                .name("Product A")
+                .stock(10)
+                .price(10.99)
+                .imageUrl("lorem")
+                .year(1900)
+                .build();
+
         Product product = new Product();
         product.setName("Product A");
+        product.setCreatedBy(mockAdmin);
 
         when(authService.getAuthenticatedCustomer()).thenReturn(mockAdmin);
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         // Act
-        ProductDTO result = productService.createProduct(product);
+        ProductDTO result = productService.createProduct(request);
 
         // Assert
         assertNotNull(result);
@@ -124,12 +134,12 @@ public class ProductServiceTests {
         // Arrange
         Customer mockCustomer = new Customer();
         mockCustomer.setAdmin(false);
-        Product product = new Product();
+        ProductRequestDTO productRequestDTO = ProductRequestDTO.builder().build();
 
         when(authService.getAuthenticatedCustomer()).thenReturn(mockCustomer);
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> productService.createProduct(product));
+        assertThrows(RuntimeException.class, () -> productService.createProduct(productRequestDTO));
     }
 
     @Test
@@ -138,17 +148,25 @@ public class ProductServiceTests {
         Customer mockAdmin = new Customer();
         mockAdmin.setId(1);
         mockAdmin.setAdmin(true);
+        mockAdmin.setEmail("admin@example.com");
 
         Product existingProduct = new Product();
         existingProduct.setId(1L);
         existingProduct.setCreatedBy(mockAdmin);
+
+        ProductRequestDTO request = ProductRequestDTO.builder()
+                .name("Product A")
+                .stock(10)
+                .price(10.99)
+                .imageUrl("lorem.jpg")
+                .build();
 
         when(authService.getAuthenticatedCustomer()).thenReturn(mockAdmin);
         when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
         when(productRepository.save(existingProduct)).thenReturn(existingProduct);
 
         // Act
-        ProductDTO updatedProduct = productService.updateProduct(1L, existingProduct);
+        ProductDTO updatedProduct = productService.updateProduct(1L, request);
 
         // Assert
         assertNotNull(updatedProduct);
@@ -161,11 +179,60 @@ public class ProductServiceTests {
         Customer mockAdmin = new Customer();
         mockAdmin.setAdmin(true);
 
+        ProductRequestDTO request = ProductRequestDTO.builder().build();
+
         when(authService.getAuthenticatedCustomer()).thenReturn(mockAdmin);
         when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> productService.updateProduct(1L, new Product()));
+        assertThrows(RuntimeException.class, () -> productService.updateProduct(1L, request));
+    }
+
+    @Test
+    void testUpdateProduct_Fail() {
+        // Arrange
+        Customer mockAdmin = new Customer();
+        mockAdmin.setId(1);
+        mockAdmin.setAdmin(true);
+        mockAdmin.setEmail("admin@example.com");
+
+        Product existingProduct = new Product();
+        existingProduct.setId(1L);
+        existingProduct.setCreatedBy(mockAdmin);
+
+        ProductRequestDTO request = ProductRequestDTO.builder()
+                .name("Product A")
+                .stock(10)
+                .price(10.99)
+                .year(1990)
+                .imageUrl("lorem.jpg")
+                .build();
+
+        when(authService.getAuthenticatedCustomer()).thenReturn(mockAdmin);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
+        when(productRepository.save(existingProduct)).thenReturn(existingProduct);
+
+        // Assert valid name
+        request.setName(null);
+        assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
+        request.setName("Product A");
+
+        // Assert valid stock
+        request.setStock(-90);
+        assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
+        request.setStock(10);
+
+        request.setPrice(-90.90);
+        assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
+        request.setPrice(10.99);
+
+        request.setImageUrl(null);
+        assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
+        request.setImageUrl("lorem.jpg");
+
+        request.setYear(-1900);
+        assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
+        request.setYear(1990);
     }
 
     @Test
