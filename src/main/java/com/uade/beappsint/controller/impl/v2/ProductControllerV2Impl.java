@@ -36,8 +36,9 @@ public class ProductControllerV2Impl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<ProductDTO> updateProduct(Long id, ProductRequestDTO productDetails) {
-        return null;
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductRequestDTO productDetails) {
+        return ResponseEntity.ok(productService.updateProduct_v2(id, productDetails));
     }
 
     @Override

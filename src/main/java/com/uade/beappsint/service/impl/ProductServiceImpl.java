@@ -105,6 +105,30 @@ public class ProductServiceImpl implements ProductService {
         return updatedProduct.toDTO();
     }
 
+    public ProductDTO updateProduct_v2(Long id, ProductRequestDTO productDetails) {
+        Customer customer = assertAdmin();
+        isProductCreator(id, customer);
+        Product product = productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        assertProductRequest(productDetails);
+
+        String imageUrl;
+
+        if (productDetails.getImageUrl() != null) {
+            imageUrl = cloudinaryService.uploadImageBase64(productDetails.getImageUrl());
+        } else {
+            imageUrl = product.getImageUrl();
+        }
+
+        product.setName(productDetails.getName());
+        product.setDescription(productDetails.getDescription());
+        product.setStock(productDetails.getStock());
+        product.setPrice(productDetails.getPrice());
+        product.setCategory(productDetails.getCategory());
+        product.setImageUrl(imageUrl);
+        Product updatedProduct = productRepository.save(product);
+        return updatedProduct.toDTO();
+    }
+
     public void deleteProduct(Long id) {
         assertAdmin();
         isProductCreator(id, authService.getAuthenticatedCustomer());
