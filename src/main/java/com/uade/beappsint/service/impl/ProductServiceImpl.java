@@ -270,6 +270,15 @@ public class ProductServiceImpl implements ProductService {
         return productIdList;
     }
 
+    @Transactional
+    public void removeProductSecondaryImages(Long productId) {
+        Customer customer = assertAdmin();
+        Product product = productRepository.findById(productId)
+                .orElseThrow(() -> new BadRequestException("Product not found"));
+        isProductCreator(productId, customer);
+        imageRepository.deleteAllByProductId(productId);
+    }
+
     public void assertProductRequest(ProductRequestDTO productRequest) throws BadRequestException {
         if (productRequest.getName() == null || productRequest.getName().isBlank()) {
             throw new BadRequestException("Product name cannot be empty");

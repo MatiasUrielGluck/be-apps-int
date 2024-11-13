@@ -96,4 +96,9 @@ public class ProductControllerV2Impl implements ProductController {
     public ResponseEntity<GenericResponseDTO> toggleFavorite(Long productId) {
         return null;
     }
+
+    @Override
+    public ResponseEntity<Void> removeProductSecondaryImages(Long productId) {
+        return null;
+    }
 }

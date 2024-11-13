@@ -69,4 +69,10 @@ public interface ProductController {
             description = "Toggle product favorite status"
     )
     ResponseEntity<GenericResponseDTO> toggleFavorite(Long productId);
+
+    @Operation(
+            summary = "Remove all secondary images of product",
+            description = "Remove all secondary images of product."
+    )
+    ResponseEntity<Void> removeProductSecondaryImages(Long productId);
 }

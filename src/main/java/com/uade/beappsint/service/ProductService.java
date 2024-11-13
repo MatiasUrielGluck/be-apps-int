@@ -48,4 +48,6 @@ public interface ProductService {
     GenericResponseDTO toggleFavorite(Long productId);
 
     List<Long> getFavorites();
+
+    void removeProductSecondaryImages(Long productId);
 }
