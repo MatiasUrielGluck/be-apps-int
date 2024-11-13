@@ -101,6 +101,7 @@ public class TransactionServiceImpl implements TransactionService {
 
             TransactionItem item = TransactionItem.builder()
                     .productId(cartItemDTO.getProduct().getId())
+                    .productName(cartItemDTO.getProduct().getName())
                     .transaction(transaction)
                     .amountUnitARS(amountARS)
                     .amountUnitUSD(amountUSD)
