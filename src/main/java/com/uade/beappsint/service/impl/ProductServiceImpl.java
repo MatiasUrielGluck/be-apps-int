@@ -319,9 +319,5 @@ public class ProductServiceImpl implements ProductService {
         if (productRequest.getYear() != null && productRequest.getYear() <= 0) {
             throw new BadRequestException("Year cannot be negative");
         }
-
-        if (productRequest.getImageUrl() == null || productRequest.getImageUrl().isBlank()) {
-            throw new BadRequestException("The product must be uploaded with at least one image");
-        }
     }
 }
