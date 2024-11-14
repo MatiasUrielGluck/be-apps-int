@@ -67,6 +67,9 @@ public class Customer implements UserDetails {
     @Column(name = "verification_code")
     private String verificationCode;
 
+    @Column(name = "verified")
+    private Boolean verified;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_recently_viewed",
@@ -131,6 +134,7 @@ public class Customer implements UserDetails {
                 .isAdmin(this.isAdmin)
                 .kycStatus(this.kycStatus)
                 .theme(this.theme)
+                .verified(this.verified)
                 .build();
     }
 }

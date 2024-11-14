@@ -1,5 +1,6 @@
 package com.uade.beappsint.controller;
 
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.auth.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,4 +19,10 @@ public interface AuthController {
 
     @Operation(summary = "Test public endpoint", description = "A public endpoint for testing purposes")
     String publicEndpointTest();
+
+    @Operation(summary = "Sends a new verification code", description = "Sends a new verification code")
+    ResponseEntity<GenericResponseDTO> resendVerificationCode();
+
+    @Operation(summary = "Verifies the verification code", description = "Checks that the verification code is correct")
+    ResponseEntity<GenericResponseDTO> verifyVerificationCode(VerificationCodeDTO request);
 }

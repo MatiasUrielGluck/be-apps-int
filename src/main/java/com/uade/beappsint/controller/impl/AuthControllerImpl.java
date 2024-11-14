@@ -1,6 +1,7 @@
 package com.uade.beappsint.controller.impl;
 
 import com.uade.beappsint.controller.AuthController;
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,20 @@ public class AuthControllerImpl implements AuthController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(authService.getCustomerInfo());
+    }
+
+    @PutMapping("/resend-code")
+    public ResponseEntity<GenericResponseDTO> resendVerificationCode() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.resendVerificationCode());
+    }
+
+    @PostMapping("/verify-code")
+    public ResponseEntity<GenericResponseDTO> verifyVerificationCode(@RequestBody VerificationCodeDTO request) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(authService.verifyVerificationCode(request));
     }
 
     @PostMapping("/test")

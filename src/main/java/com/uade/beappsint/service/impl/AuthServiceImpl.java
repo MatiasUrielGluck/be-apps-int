@@ -1,5 +1,6 @@
 package com.uade.beappsint.service.impl;
 
+import com.uade.beappsint.dto.GenericResponseDTO;
 import com.uade.beappsint.dto.auth.*;
 import com.uade.beappsint.entity.Customer;
 import com.uade.beappsint.enums.KycStatusEnum;
@@ -76,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
                 .isAdmin(false)
                 .isEnabled(true)
                 .theme(ThemeEnum.DARK)
+                .verified(false)
                 .build();
 
         Customer savedCustomer = customerRepository.save(newUser);
@@ -114,4 +116,31 @@ public class AuthServiceImpl implements AuthService {
         return getAuthenticatedCustomer().toDto();
     }
 
+    public GenericResponseDTO resendVerificationCode() {
+        createAndSendVerificationCode(getAuthenticatedCustomer());
+        return GenericResponseDTO.builder()
+                .message("OK")
+                .build();
+    }
+
+    public GenericResponseDTO verifyVerificationCode(VerificationCodeDTO request) {
+        Customer customer = getAuthenticatedCustomer();
+
+        if (customer.getVerified() != null && customer.getVerified()) {
+            throw new BadRequestException("Verification was already done.");
+        }
+
+        if (!request.getVerificationCode().equals(customer.getVerificationCode())) {
+            System.out.println(request.getVerificationCode() + customer.getVerificationCode());
+            throw new BadRequestException("The verification code is invalid.");
+        }
+
+        customer.setVerified(true);
+        customer.setVerificationCode("");
+        customerRepository.save(customer);
+
+        return GenericResponseDTO.builder()
+                .message("OK")
+                .build();
+    }
 }
