@@ -3,13 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Verification Code</title>
+    <style>
+        h1, h3, p {
+            text-align: center;
+        }
+
+        h1 {
+            color: rgb(0, 129, 198);
+        }
+
+        .code {
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 16px;
+            letter-spacing: 1.5px;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
     <div>
         <h1>BlackNuster</h1>
-        <h3>!Te damos la bienvenida a BlackNuster!</h3>
-        <p>Tu código de verificación es: <span>${code}</span></p>
+        <h3>¡Te damos la bienvenida a BlackNuster!</h3>
+        <p>Tu código de verificación es: <span class="code">${code}</span></p>
         <p>Si vos no creaste esta cuenta, ignorá este email.</p>
+        <p class="footer">--- Equipo de BlackNuster ---</p>
     </div>
+
 </body>
 </html>
