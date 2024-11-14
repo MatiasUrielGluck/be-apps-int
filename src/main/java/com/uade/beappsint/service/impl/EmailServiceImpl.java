@@ -7,11 +7,12 @@ import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,17 +24,18 @@ public class EmailServiceImpl implements EmailService {
     @Value("${EMAIL_USERNAME}")
     private String fromEmail;
 
+    private final List<String> allowedEmails = new ArrayList<>(){{
+        add("matiasugluck@gmail.com");
+    }};
+
     @Override
     public void sendEmail(String to, String subject, String body) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(body);
-        mailSender.send(message);
     }
 
 
     public void sendEmailFromTemplate(String to, String subject, String templateName, Map<String, String> replacements) throws MessagingException, IOException {
+        if (!allowedEmails.contains(to)) return;
+
         MimeMessage message = mailSender.createMimeMessage();
 
         message.setFrom(new InternetAddress(fromEmail));

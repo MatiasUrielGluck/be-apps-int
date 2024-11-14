@@ -8,7 +8,9 @@ import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.UserAlreadyExistsException;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.service.AuthService;
+import com.uade.beappsint.service.EmailService;
 import com.uade.beappsint.service.JwtService;
+import com.uade.beappsint.utils.CommonUtilities;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +19,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -24,6 +30,40 @@ public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final EmailService emailService;
+
+    private void createAndSendVerificationCode(Customer customer) {
+        int MAX_ITERATOR = 500;
+        int iterator = 0;
+        boolean isRepeated = true;
+        String verificationCode;
+
+        do {
+            verificationCode = CommonUtilities.generateVerificationCode();
+
+            Optional<Customer> customerOptional = customerRepository.findByVerificationCode(verificationCode);
+            if (customerOptional.isEmpty()) {
+                isRepeated = false;
+            }
+
+            iterator++;
+        } while (iterator < MAX_ITERATOR && isRepeated);
+
+        if (isRepeated) return;
+
+        customer.setVerificationCode(verificationCode);
+        customerRepository.save(customer);
+
+        // Send email
+        Map<String, String> replacements = new HashMap<>();
+        replacements.put("code", verificationCode);
+
+        try {
+            emailService.sendEmailFromTemplate(customer.getEmail(), "Código de verificación", "VerificationEmail", replacements);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public SignupResponseDTO signup(SignupRequestDTO request) {
         if (customerRepository.existsByEmail(request.getEmail())) throw new UserAlreadyExistsException(request.getEmail());
@@ -38,7 +78,9 @@ public class AuthServiceImpl implements AuthService {
                 .theme(ThemeEnum.DARK)
                 .build();
 
-        customerRepository.save(newUser);
+        Customer savedCustomer = customerRepository.save(newUser);
+
+        createAndSendVerificationCode(savedCustomer);
 
         return SignupResponseDTO.builder()
                 .message("The user was created.")

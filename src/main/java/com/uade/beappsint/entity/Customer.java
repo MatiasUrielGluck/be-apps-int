@@ -64,6 +64,9 @@ public class Customer implements UserDetails {
     @Column(name = "is-enabled")
     private Boolean isEnabled;
 
+    @Column(name = "verification_code")
+    private String verificationCode;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "customer_recently_viewed",
