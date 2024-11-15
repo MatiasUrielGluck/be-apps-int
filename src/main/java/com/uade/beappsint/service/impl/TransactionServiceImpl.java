@@ -10,13 +10,16 @@ import com.uade.beappsint.repository.TransactionItemRepository;
 import com.uade.beappsint.repository.TransactionRepository;
 import com.uade.beappsint.service.AuthService;
 import com.uade.beappsint.service.CartService;
+import com.uade.beappsint.service.EmailService;
 import com.uade.beappsint.service.TransactionService;
 import com.uade.beappsint.utils.CommonUtilities;
 import com.uade.beappsint.utils.TransactionUtilities;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -28,6 +31,37 @@ public class TransactionServiceImpl implements TransactionService {
     private final AuthService authService;
     private final TransactionRepository transactionRepository;
     private final TransactionItemRepository transactionItemRepository;
+    private final EmailService emailService;
+
+    @Value("${FRONTEND_CLIENT_URL}")
+    private String frontendClientUrl;
+
+    public void createAndSendEmailReceipt(TransactionDTO transactionDTO) {
+        Customer customer = authService.getAuthenticatedCustomer();
+        // Send email
+        Map<String, String> replacements = new HashMap<>();
+        replacements.put("transactionId", transactionDTO.getId().toString());
+
+        StringBuilder itemsReplacement = new StringBuilder();
+
+        DecimalFormat df = new DecimalFormat("#.##");
+
+        for (TransactionItemDTO item : transactionDTO.getItems()) {
+            itemsReplacement.append("<div class=\"element\"><p>Nombre: ").append(item.getProductName()).append(" (x").append(item.getQuantity()).append(")").append("</p>");
+            itemsReplacement.append("<p>Precio unitario: ").append(item.getAmountUnitARS()).append("</p>");
+            itemsReplacement.append("<p>Precio total: ").append(df.format(item.getAmountUnitARS() * item.getQuantity())).append("</p></div>");
+        }
+
+        replacements.put("items", itemsReplacement.toString());
+        replacements.put("total", "<p>Total: " + df.format(transactionDTO.getAmountARS()) + "</p>");
+        replacements.put("link", frontendClientUrl + "compras");
+
+        try {
+            emailService.sendEmailFromTemplate(customer.getEmail(), "Factura de la compra #" + transactionDTO.getId(), "TransactionReceipt", replacements);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     @Override
     public TransactionDTO createTransaction() {
@@ -44,7 +78,12 @@ public class TransactionServiceImpl implements TransactionService {
         savedTransaction = transactionRepository.save(savedTransaction);
 
         cartService.clearCart();
-        return getTransactionById(savedTransaction.getId());
+
+        TransactionDTO response = getTransactionById(savedTransaction.getId());
+
+        createAndSendEmailReceipt(response);
+
+        return response;
     }
 
     @Override
