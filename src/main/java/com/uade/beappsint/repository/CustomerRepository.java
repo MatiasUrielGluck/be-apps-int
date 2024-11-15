@@ -24,4 +24,6 @@ public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
     @Query("SELECT c.favoriteProducts FROM Customer c WHERE c.id = :customerId")
     List<Product> findFavoriteProductsByCustomerId(Integer customerId);
+
+    Optional<Customer> findByVerificationCode(String verificationCode);
 }

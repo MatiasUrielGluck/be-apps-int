@@ -20,6 +20,7 @@ public class CustomerInfoDTO {
     private Boolean isAdmin;
     private KycStatusEnum kycStatus;
     private ThemeEnum theme;
+    private Boolean verified;
 
     // Residential Info
     private String streetName;
