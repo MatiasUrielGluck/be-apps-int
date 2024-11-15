@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Transaction Receipt</title>
+    <style>
+        h1, h3, p {
+            text-align: center;
+        }
+
+        h1 {
+            color: rgb(0, 129, 198);
+        }
+
+        .code {
+            font-weight: bold;
+        }
+
+        .footer {
+            letter-spacing: 1.5px;
+            font-style: italic;
+        }
+
+        .element {
+            border-top: 1px solid rgb(0, 129, 198);
+            border-bottom: 1px solid rgb(0, 129, 198);
+        }
+
+        a {
+            text-align: center;
+            text-decoration: none;
+            padding: 12px 24px;
+            background: rgb(0, 129, 198);
+            color: #ffffff !important;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>BlackNuster</h1>
+        <h3>Recibo de compra</h3>
+        <p>¡Gracias por la compra, esperamos que la disfrutes!</p>
+        <p>Ya está disponible la factura de la compra <span class="code">#${transactionId}</span></p>
+
+        <div class="items">
+            ${items}
+        </div>
+
+        ${total}
+
+        <a href="${link}">VER MÁS</a>
+
+        <p class="footer">--- Equipo de BlackNuster ---</p>
+
+    </div>
+
+</body>
+</html>
