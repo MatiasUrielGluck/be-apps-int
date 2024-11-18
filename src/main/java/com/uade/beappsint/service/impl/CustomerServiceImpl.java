@@ -207,8 +207,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         cartRepository.findByCustomerId(customer.getId()).ifPresent(customerCart -> cartRepository.deleteById(customerCart.getId()));
         customerRepository.deleteById(id);
-        // customer.setIsEnabled(false);
-        // customerRepository.save(customer);
 
         return GenericResponseDTO.builder()
                 .message("User deleted successfully")
