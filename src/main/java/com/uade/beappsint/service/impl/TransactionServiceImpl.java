@@ -112,6 +112,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         return TransactionDTO.builder()
                 .id(transaction.getId())
+                .customerEmail(transaction.getCustomerEmail())
                 .customerInfo(transaction.getCustomer().toDto())
                 .date(LocalDate.now())
                 .amountUSD(transaction.getAmountUSD())
@@ -122,10 +123,12 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private Transaction initializeTransaction(double conversionRate) {
+        Customer customer = authService.getAuthenticatedCustomer();
         Transaction transaction = Transaction.builder()
                 .conversionRate(conversionRate)
                 .date(LocalDate.now())
                 .customer(authService.getAuthenticatedCustomer())
+                .customerEmail(customer.getEmail())
                 .build();
         return transactionRepository.save(transaction);
     }

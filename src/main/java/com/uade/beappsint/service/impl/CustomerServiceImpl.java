@@ -10,14 +10,12 @@ import com.uade.beappsint.dto.kyc.KycResidentialRequestDTO;
 import com.uade.beappsint.dto.kyc.KycResponseDTO;
 import com.uade.beappsint.dto.profile.ProfileEditionDTO;
 import com.uade.beappsint.dto.profile.ThemeDTO;
-import com.uade.beappsint.entity.AdminRequest;
-import com.uade.beappsint.entity.Customer;
-import com.uade.beappsint.entity.Product;
-import com.uade.beappsint.entity.Review;
+import com.uade.beappsint.entity.*;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.exception.ResourceNotFoundException;
 import com.uade.beappsint.repository.AdminRequestRepository;
+import com.uade.beappsint.repository.CartRepository;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ReviewRepository;
 import com.uade.beappsint.service.AuthService;
@@ -39,6 +37,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final AuthService authService;
     private final AdminRequestRepository adminRequestRepository;
     private final ReviewRepository reviewRepository;
+    private final CartRepository cartRepository;
 
     public KycResponseDTO basicKyc(KycBasicRequestDTO kycBasicRequestDTO) {
         Customer customer = authService.getAuthenticatedCustomer();
@@ -206,8 +205,10 @@ public class CustomerServiceImpl implements CustomerService {
         if (authed.getId().equals(id)) throw new BadRequestException("You are not allowed to delete yourself...");
 
         Customer customer = customerRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        customer.setIsEnabled(false);
-        customerRepository.save(customer);
+        cartRepository.findByCustomerId(customer.getId()).ifPresent(customerCart -> cartRepository.deleteById(customerCart.getId()));
+        customerRepository.deleteById(id);
+        // customer.setIsEnabled(false);
+        // customerRepository.save(customer);
 
         return GenericResponseDTO.builder()
                 .message("User deleted successfully")
