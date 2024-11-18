@@ -3,6 +3,8 @@ package com.uade.beappsint.entity;
 import com.uade.beappsint.dto.transaction.TransactionDTO;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDate;
 
@@ -16,7 +18,8 @@ public class Transaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = true)
+    @OnDelete(action = OnDeleteAction.SET_NULL)
     private Customer customer;
 
     @Column(name = "date")
@@ -31,6 +34,9 @@ public class Transaction {
     @Column(name = "conversion_rate")
     private Double conversionRate;
 
+    @Column(name = "customer_email")
+    private String customerEmail;
+
     public TransactionDTO toDTO() {
         return TransactionDTO.builder()
                 .id(id)
@@ -38,6 +44,7 @@ public class Transaction {
                 .date(date)
                 .amountARS(amountARS)
                 .amountUSD(amountUSD)
+                .customerEmail(customerEmail)
                 .build();
     }
 }

@@ -14,6 +14,7 @@ import com.uade.beappsint.entity.Review;
 import com.uade.beappsint.enums.KycStatusEnum;
 import com.uade.beappsint.exception.BadRequestException;
 import com.uade.beappsint.repository.AdminRequestRepository;
+import com.uade.beappsint.repository.CartRepository;
 import com.uade.beappsint.repository.CustomerRepository;
 import com.uade.beappsint.repository.ReviewRepository;
 import com.uade.beappsint.service.impl.CustomerServiceImpl;
@@ -54,10 +55,13 @@ public class CustomerServiceTests {
     @Mock
     private ProductService productService;
 
+    @Mock
+    private CartRepository cartRepository;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        customerService = new CustomerServiceImpl(customerRepository, productService, authService, adminRequestRepository, reviewRepository);
+        customerService = new CustomerServiceImpl(customerRepository, productService, authService, adminRequestRepository, reviewRepository, cartRepository);
         // Manually inject the mocks
     }
 

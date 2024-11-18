@@ -16,5 +16,6 @@ public class TransactionDTO {
     private Double amountUSD;
     private Double amountARS;
     private Double conversionRate;
+    private String customerEmail;
     private List<TransactionItemDTO> items;
 }
