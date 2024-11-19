@@ -26,6 +26,7 @@ public class EmailServiceImpl implements EmailService {
 
     private final List<String> allowedEmails = new ArrayList<>(){{
         add("matiasugluck@gmail.com");
+        add("tomasignacioalv@hotmail.com");
     }};
 
     @Override
