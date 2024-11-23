@@ -52,4 +52,18 @@ public interface ProductService {
     List<Long> getFavorites();
 
     void removeProductSecondaryImages(Long productId);
+
+
+
+
+
+
+
+
+
+
+    List<ProductDTO> getProductsByPriceRange(Double minPrice, Double maxPrice);
+    List<ProductDTO> getProductsByCategories(List<String> categories);
+    List<ProductDTO> getProductsInStock();
+    List<ProductDTO> getProductsAbovePrice(Double price);
 }

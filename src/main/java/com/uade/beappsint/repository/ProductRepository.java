@@ -38,4 +38,14 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
     @Transactional
     @Query(value = "DELETE FROM customer_recently_viewed WHERE product_id = :productId", nativeQuery = true)
     void deleteAllByProductId(@Param("productId") Long productId);
+
+
+
+
+
+
+    List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
+    List<Product> findByCategoryIn(List<String> categories);
+    List<Product> findByStockGreaterThan(Integer stock);
+    List<Product> findByPriceGreaterThan(Double price);
 }

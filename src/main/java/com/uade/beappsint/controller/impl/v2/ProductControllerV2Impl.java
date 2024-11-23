@@ -102,4 +102,37 @@ public class ProductControllerV2Impl implements ProductController {
     public ResponseEntity<Void> removeProductSecondaryImages(Long productId) {
         return null;
     }
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/price-range")
+    public ResponseEntity<List<ProductDTO>> getProductsByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+        List<ProductDTO> products = productService.getProductsByPriceRange(minPrice, maxPrice);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategories(
+            @RequestParam List<String> categories) {
+        return ResponseEntity.ok(productService.getProductsByCategories(categories));
+    }
+
+    @GetMapping("/in-stock")
+    public ResponseEntity<List<ProductDTO>> getProductsInStock() {
+        return ResponseEntity.ok(productService.getProductsInStock());
+    }
+
+    @GetMapping("/above-price")
+    public ResponseEntity<List<ProductDTO>> getProductsAbovePrice(@RequestParam Double price) {
+        return ResponseEntity.ok(productService.getProductsAbovePrice(price));
+    }
 }
