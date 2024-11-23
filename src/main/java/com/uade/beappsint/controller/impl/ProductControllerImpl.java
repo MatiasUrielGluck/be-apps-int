@@ -134,4 +134,9 @@ public class ProductControllerImpl implements ProductController {
             @RequestParam List<String> categories) {
         return ResponseEntity.ok(productService.getProductsByCategories(categories));
     }
+
+    @GetMapping("/in-stock")
+    public ResponseEntity<List<ProductDTO>> getProductsInStock() {
+        return ResponseEntity.ok(productService.getProductsInStock());
+    }
 }

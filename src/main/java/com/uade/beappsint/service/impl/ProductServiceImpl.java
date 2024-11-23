@@ -336,4 +336,12 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getProductsInStock() {
+        return productRepository.findByStockGreaterThan(0)
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
 }

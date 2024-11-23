@@ -59,4 +59,5 @@ public interface ProductService {
 
     List<ProductDTO> getProductsByPriceRange(Double minPrice, Double maxPrice);
     List<ProductDTO> getProductsByCategories(List<String> categories);
+    List<ProductDTO> getProductsInStock();
 }
