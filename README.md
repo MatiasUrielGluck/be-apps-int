@@ -32,6 +32,8 @@ La aplicación cumple con los siguientes casos de uso:
 ### Gestión de Usuarios:
 - **Registro de usuarios**: Permite registrar usuarios solicitando nombre de usuario, email, contraseña, fecha de nacimiento, nombre y apellido.
 - **Login**: Los usuarios pueden autenticarse con su email o nombre de usuario y contraseña, obteniendo un JWT que les permite operar en el sistema.
+- **Roles de Usuario**: Los administradores tienen permisos especiales para gestionar productos y acceso a una sección exclusiva. Los usuarios comunes tienen acceso limitado a las funcionalidades básicas, como la compra de productos y la participación en reseñas.
+
 
 ### Catálogo de Productos:
 - **Visualización de productos**: Los usuarios autenticados pueden acceder a la home de la plataforma, donde se muestra un listado de productos destacados, productos por categoría, y productos recientemente vistos por el usuario.
@@ -54,6 +56,9 @@ Además de los requerimientos solicitados, se implementaron las siguientes funci
 - **Motor de Recomendación de Productos**: Basado en el género, década y director de productos (películas), así como en los productos favoritos del usuario.
 - **Admin Requests**: Un módulo adicional donde los administradores pueden gestionar solicitudes específicas.
 - **Sección de Reviews**: Los usuarios pueden dejar reseñas y calificar los productos comprados.
+- **Validación por Correo Electrónico al Registrarse**: Se incluye un sistema de validación por correo electrónico para los nuevos usuarios al momento de registrarse, asegurando la autenticidad de las cuentas.
+- **Envío de Correos Electrónicos al Realizar Compras**: El sistema envía automáticamente un recibo de compra al usuario luego de realizar una transacción exitosa, lo que incluye detalles de los productos comprados y el monto total.
+
 
 ## Instalación y uso
 
