@@ -7,6 +7,7 @@ import com.uade.beappsint.dto.ProductDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -75,4 +76,14 @@ public interface ProductController {
             description = "Remove all secondary images of product."
     )
     ResponseEntity<Void> removeProductSecondaryImages(Long productId);
+
+
+
+
+
+    @Operation(
+            summary = "Returns products in a price range.",
+            description = "Returns products in a price range."
+    )
+    ResponseEntity<List<ProductDTO>> getProductsByPriceRange(Double minPrice, Double maxPrice);
 }

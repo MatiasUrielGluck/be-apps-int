@@ -320,4 +320,14 @@ public class ProductServiceImpl implements ProductService {
             throw new BadRequestException("Year cannot be negative");
         }
     }
+
+
+    public List<ProductDTO> getProductsByPriceRange(Double minPrice, Double maxPrice) {
+        return productRepository.findByPriceBetween(minPrice, maxPrice)
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
+
 }

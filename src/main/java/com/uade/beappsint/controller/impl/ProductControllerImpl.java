@@ -116,4 +116,16 @@ public class ProductControllerImpl implements ProductController {
         productService.removeProductSecondaryImages(productId);
         return ResponseEntity.ok().build();
     }
+
+
+
+
+
+    @GetMapping("/price-range")
+    public ResponseEntity<List<ProductDTO>> getProductsByPriceRange(
+            @RequestParam Double minPrice,
+            @RequestParam Double maxPrice) {
+        List<ProductDTO> products = productService.getProductsByPriceRange(minPrice, maxPrice);
+        return ResponseEntity.ok(products);
+    }
 }
