@@ -45,4 +45,5 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
 
     List<Product> findByPriceBetween(Double minPrice, Double maxPrice);
+    List<Product> findByCategoryIn(List<String> categories);
 }

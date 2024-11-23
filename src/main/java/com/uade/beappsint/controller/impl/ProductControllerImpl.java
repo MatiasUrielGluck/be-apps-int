@@ -128,4 +128,10 @@ public class ProductControllerImpl implements ProductController {
         List<ProductDTO> products = productService.getProductsByPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
+
+    @GetMapping("/categories")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategories(
+            @RequestParam List<String> categories) {
+        return ResponseEntity.ok(productService.getProductsByCategories(categories));
+    }
 }

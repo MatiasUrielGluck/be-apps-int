@@ -86,4 +86,10 @@ public interface ProductController {
             description = "Returns products in a price range."
     )
     ResponseEntity<List<ProductDTO>> getProductsByPriceRange(Double minPrice, Double maxPrice);
+
+    @Operation(
+            summary = "Returns products inside many categories.",
+            description = "Returns products inside many categories."
+    )
+    ResponseEntity<List<ProductDTO>> getProductsByCategories(@RequestParam List<String> categories);
 }

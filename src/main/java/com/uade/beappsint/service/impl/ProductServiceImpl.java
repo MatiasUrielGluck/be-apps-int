@@ -329,5 +329,11 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getProductsByCategories(List<String> categories) {
+        return productRepository.findByCategoryIn(categories)
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
 
 }
