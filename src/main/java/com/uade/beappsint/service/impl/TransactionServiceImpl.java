@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -152,4 +153,113 @@ public class TransactionServiceImpl implements TransactionService {
             transactionItemRepository.save(item);
         }
     }
+
+
+
+    @Transactional
+    public void deleteTransaction(Long id) {
+        transactionRepository.deleteById(id);
+    }
+
+    /*
+    @Override
+    public List<TransactionDTO> getTransactionsByStatus(String status) {
+        List<Transaction> transactions = transactionRepository.findByStatus(status);
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            transactionDTOS.add(mapTransactionToDTO(transaction));
+        }
+
+        return transactionDTOS;
+    }
+
+    @Override
+    public List<TransactionDTO> getTransactionsByAmountRange(Double minAmount, Double maxAmount) {
+        List<Transaction> transactions = transactionRepository.findByAmountBetween(minAmount, maxAmount);
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            transactionDTOS.add(mapTransactionToDTO(transaction));
+        }
+
+        return transactionDTOS;
+    }
+
+    @Override
+    public List<TransactionDTO> getTransactionsByCustomerId(Long customerId) {
+        List<Transaction> transactions = transactionRepository.findByCustomerId(Math.toIntExact(customerId));
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            transactionDTOS.add(mapTransactionToDTO(transaction));
+        }
+
+        return transactionDTOS;
+    }
+
+    @Override
+    @Transactional
+    public TransactionDTO updateTransactionStatus(Long id, String status) {
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+
+        transaction = transactionRepository.save(transaction);
+
+        return mapTransactionToDTO(transaction);
+    }
+
+    @Override
+    public List<TransactionDTO> getLatestTransactions() {
+        List<Transaction> transactions = transactionRepository.findTop10ByOrderByDateDesc();
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+
+        for (Transaction transaction : transactions) {
+            transactionDTOS.add(mapTransactionToDTO(transaction));
+        }
+
+        return transactionDTOS;
+    }
+
+    @Transactional
+    public List<TransactionDTO> createBulkTransactions(List<TransactionDTO> transactionDTOs) {
+        List<Transaction> transactions = transactionDTOs.stream()
+                .map(this::mapDTOToTransaction)
+                .collect(Collectors.toList());
+        transactions = (List<Transaction>) transactionRepository.saveAll(transactions);
+
+        List<TransactionDTO> transactionDTOS = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            transactionDTOS.add(mapTransactionToDTO(transaction));
+        }
+
+        return transactionDTOS;
+    }
+
+    private TransactionDTO mapTransactionToDTO(Transaction transaction) {
+        List<TransactionItem> items = transactionItemRepository.findAllByTransactionId(transaction.getId());
+        List<TransactionItemDTO> mappedItems = new ArrayList<>();
+
+        for (TransactionItem item : items) {
+            mappedItems.add(item.toDTO());
+        }
+
+        return TransactionDTO.builder()
+                .id(transaction.getId())
+                .customerEmail(transaction.getCustomerEmail())
+                .customerInfo(transaction.getCustomer().toDto())
+                .date(transaction.getDate())
+                .amountUSD(transaction.getAmountUSD())
+                .amountARS(transaction.getAmountARS())
+                .conversionRate(transaction.getConversionRate())
+                .items(mappedItems)
+                .build();
+    }
+
+    private Transaction mapDTOToTransaction(TransactionDTO transactionDTO) {
+        return new Transaction();
+    }
+
+     */
+
 }
