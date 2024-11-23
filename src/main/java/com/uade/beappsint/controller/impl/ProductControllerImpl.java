@@ -139,4 +139,9 @@ public class ProductControllerImpl implements ProductController {
     public ResponseEntity<List<ProductDTO>> getProductsInStock() {
         return ResponseEntity.ok(productService.getProductsInStock());
     }
+
+    @GetMapping("/above-price")
+    public ResponseEntity<List<ProductDTO>> getProductsAbovePrice(@RequestParam Double price) {
+        return ResponseEntity.ok(productService.getProductsAbovePrice(price));
+    }
 }

@@ -343,5 +343,12 @@ public class ProductServiceImpl implements ProductService {
                 .collect(Collectors.toList());
     }
 
+    public List<ProductDTO> getProductsAbovePrice(Double price) {
+        return productRepository.findByPriceGreaterThan(price)
+                .stream()
+                .map(Product::toDTO)
+                .collect(Collectors.toList());
+    }
+
 
 }

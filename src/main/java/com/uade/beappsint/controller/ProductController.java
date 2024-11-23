@@ -91,5 +91,17 @@ public interface ProductController {
             summary = "Returns products inside many categories.",
             description = "Returns products inside many categories."
     )
-    ResponseEntity<List<ProductDTO>> getProductsByCategories(@RequestParam List<String> categories);
+    ResponseEntity<List<ProductDTO>> getProductsByCategories(List<String> categories);
+
+    @Operation(
+            summary = "Returns just products in stock.",
+            description = "Returns just products in stock."
+    )
+    ResponseEntity<List<ProductDTO>> getProductsInStock();
+
+    @Operation(
+            summary = "Returns products above a certain price.",
+            description = "Returns products above a certain price."
+    )
+    ResponseEntity<List<ProductDTO>> getProductsAbovePrice(Double price);
 }
