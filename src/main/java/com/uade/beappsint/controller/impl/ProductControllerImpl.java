@@ -121,6 +121,11 @@ public class ProductControllerImpl implements ProductController {
 
 
 
+
+
+
+
+
     @GetMapping("/price-range")
     public ResponseEntity<List<ProductDTO>> getProductsByPriceRange(
             @RequestParam Double minPrice,

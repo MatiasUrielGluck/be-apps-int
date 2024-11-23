@@ -114,6 +114,11 @@ public interface ProductController {
 
 
 
+
+
+
+
+
     @Operation(
             summary = "Returns products in a price range.",
             description = "Returns products in a price range."

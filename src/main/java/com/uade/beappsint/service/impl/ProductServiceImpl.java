@@ -322,6 +322,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
 
+
+
+
+
+
+
+
+
     public List<ProductDTO> getProductsByPriceRange(Double minPrice, Double maxPrice) {
         return productRepository.findByPriceBetween(minPrice, maxPrice)
                 .stream()
