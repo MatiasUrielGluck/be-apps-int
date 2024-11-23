@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu pedido está en camino</title>
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: rgb(0, 129, 198);
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .title {
+            color: rgb(0, 129, 198);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .details {
+            margin-top: 10px;
+        }
+
+        .button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: rgb(34, 139, 34);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>BlackNuster</h1>
+
+    <h2 class="title">Tu pedido está en camino</h2>
+
+    <p>¡Buenas noticias! Hemos enviado tu pedido con el número de seguimiento <strong>${trackingNumber}</strong>.</p>
+
+    <p class="details">Puedes rastrear tu pedido haciendo clic en el siguiente botón:</p>
+
+    <a href="${trackingLink}" class="button">Rastrear mi pedido</a>
+
+    <p>Gracias por confiar en BlackNuster.</p>
+
+    <p>--- Equipo de BlackNuster ---</p>
+</div>
+</body>
+</html>
