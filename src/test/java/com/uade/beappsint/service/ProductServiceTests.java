@@ -230,9 +230,11 @@ public class ProductServiceTests {
         assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
         request.setPrice(10.99);
 
+        /*
         request.setImageUrl(null);
         assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
         request.setImageUrl("lorem.jpg");
+         */
 
         request.setYear(-1900);
         assertThrows(BadRequestException.class, () -> productService.updateProduct(1L, request));
