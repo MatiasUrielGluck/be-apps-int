@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReviewDTO {
     private Long productId;
-    private Long userId;
+    private int userId;
     private int rating;
     private String comment;
 }

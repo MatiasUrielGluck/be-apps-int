@@ -135,12 +135,9 @@ public class CustomerServiceImpl implements CustomerService {
         return adminRequest.toDTO();
     }
 
-    public ReviewDTO addReview(Integer customerId, ReviewDTO reviewDTO) {
-        Customer customerAuth = authService.getAuthenticatedCustomer();
-        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
-            throw new BadRequestException("Kyc stage already completed.");
+    public ReviewDTO addReview(ReviewDTO reviewDTO) {
         Review review = new Review();
-        Customer customer = customerRepository.findById(customerId).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        Customer customer = customerRepository.findById(reviewDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         ProductDTO productDTO = productService.getProductById(reviewDTO.getProductId());
         Product product = new Product();
             product.setId(productDTO.getId());
@@ -158,9 +155,6 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public List<ReviewDTO> getReviewsByProductId(Long productId) {
-        Customer customerAuth = authService.getAuthenticatedCustomer();
-        if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
-            throw new BadRequestException("Kyc stage already completed.");
         List<Review> reviews = reviewRepository.findByProductId(productId);
         return reviews.stream().map(Review::toDTO).collect(Collectors.toList());
     }
