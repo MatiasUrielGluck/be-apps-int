@@ -28,7 +28,7 @@ public interface CustomerService {
 
     AdminRequestDTO approveAdminRequest(Integer requestId);
 
-    ReviewDTO addReview(Integer customerId, ReviewDTO reviewDTO);
+    ReviewDTO addReview(ReviewDTO reviewDTO);
 
     List<ReviewDTO> getReviewsByProductId(Long productId);
 

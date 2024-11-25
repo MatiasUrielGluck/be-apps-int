@@ -43,7 +43,7 @@ public interface CustomerController {
     ResponseEntity<List<AdminRequestDTO>> getPendingAdminRequests();
 
     @Operation(summary = "Add a review", description = "Creates a new review for a customer.")
-    ResponseEntity<ReviewDTO> addReview(Integer customerId, ReviewDTO reviewDTO);
+    ResponseEntity<ReviewDTO> addReview(ReviewDTO reviewDTO);
 
     @Operation(summary = "Get reviews by product", description = "Retrieves all reviews for a specific product.")
     ResponseEntity<List<ReviewDTO>> getReviewsByProductId(Long productId);

@@ -207,7 +207,7 @@ public class CustomerServiceTests {
         mockProductDTO.setName("Product A");
 
         Product mockProduct = new Product();
-        mockProduct.setId(101L); // Asignar ID
+        mockProduct.setId(101L);
         mockProduct.setName("Product A");
 
         Review mockReview = new Review();
@@ -219,10 +219,10 @@ public class CustomerServiceTests {
         Mockito.when(authService.getAuthenticatedCustomer()).thenReturn(mockCustomer);
         Mockito.when(customerRepository.findById(Mockito.anyInt())).thenReturn(Optional.of(mockCustomer));
         Mockito.when(productService.getProductById(Mockito.anyLong())).thenReturn(mockProductDTO);
-        Mockito.when(reviewRepository.save(Mockito.any(Review.class))).thenReturn(mockReview); // Mockear el guardado
+        Mockito.when(reviewRepository.save(Mockito.any(Review.class))).thenReturn(mockReview);
 
         // Act
-        ReviewDTO result = customerService.addReview(1, reviewDTO);
+        ReviewDTO result = customerService.addReview(reviewDTO);
 
         // Assert
         assertEquals("Great product!", result.getComment());

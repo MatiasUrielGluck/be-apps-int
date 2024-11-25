@@ -85,9 +85,9 @@ public class CustomerControllerImpl implements CustomerController {
         return ResponseEntity.status(HttpStatus.OK).body(pendingRequests);
     }
 
-    @PostMapping("addReview/{customerId}")
-    public ResponseEntity<ReviewDTO> addReview(@PathVariable @Validated Integer customerId, @RequestBody @Validated ReviewDTO reviewDTO) {
-        ReviewDTO createdReview = customerService.addReview(customerId, reviewDTO);
+    @PostMapping("/addReview")
+    public ResponseEntity<ReviewDTO> addReview(@RequestBody @Validated ReviewDTO reviewDTO) {
+        ReviewDTO createdReview = customerService.addReview(reviewDTO);
         return new ResponseEntity<>(createdReview, HttpStatus.CREATED);
     }
 

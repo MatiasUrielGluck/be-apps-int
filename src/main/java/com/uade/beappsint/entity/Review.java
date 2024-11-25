@@ -40,6 +40,7 @@ public class Review {
 
     public ReviewDTO toDTO() {
         return ReviewDTO.builder()
+                .id(this.id)
                 .productId(this.product.getId())
                 .rating(this.rating)
                 .comment(this.comment)
