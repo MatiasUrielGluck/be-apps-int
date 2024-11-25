@@ -108,7 +108,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer customerAuth = authService.getAuthenticatedCustomer();
         if (!customerAuth.getKycStatus().equals(KycStatusEnum.BASIC_KYC))
             throw new BadRequestException("Kyc stage already completed.");
-
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         AdminRequest adminRequest = new AdminRequest();
@@ -136,8 +135,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public ReviewDTO addReview(ReviewDTO reviewDTO) {
+        Customer customerAuth = authService.getAuthenticatedCustomer();
         Review review = new Review();
-        Customer customer = customerRepository.findById(reviewDTO.getUserId()).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        Customer customer = customerRepository.findById(customerAuth.getId()).orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         ProductDTO productDTO = productService.getProductById(reviewDTO.getProductId());
         Product product = new Product();
             product.setId(productDTO.getId());
