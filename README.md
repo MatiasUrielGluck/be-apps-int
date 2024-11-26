@@ -17,6 +17,10 @@ Tuesday, 24th September 2024
 
 The technology stack used for the backend includes:
 
+- **Java Spring Boot**: Framework for developing the REST API, using a microservice-based architecture.
+- **JPA (Java Persistence API)**: Used for object-relational mapping and interaction with the relational database.
+- **CRUD Repository**: To facilitate Create, Read, Update, Delete operations in the database.
+
 ---
 
 
