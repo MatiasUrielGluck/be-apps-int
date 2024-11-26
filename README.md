@@ -23,7 +23,11 @@ The technology stack used for the backend includes:
 - **JWT (JSON Web Token)**: Implemented for secure user authentication and authorization, protecting access routes to the API.
 - **MySQL**: Relational database used to store structured data on products, users, and purchases.
 
+**Frontend Repository:** https://github.com/17sTomy/fe-apps-int
 
+## Requirements
+
+The application fulfills the following use cases:
 
 ---
 
