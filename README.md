@@ -1,4 +1,79 @@
-# E-Commerce Web Application - Backend
+# E-Commerce Web Application - Backend (English README 🇺🇸)
+
+![](Imagenes/LogoUADE.svg)
+
+This project corresponds to the first submission of the Obligatory Practical Work (TPO) for the course **Interactive Applications** in the second semester of 2024, developed as part of the **Computer Engineering** degree at UADE. It is the development of the backend for an e-commerce application, implemented using **Java Spring Boot**. The application aims to meet the academic requirements for the course, so it does not respond to any real commercial need but is set in an academic context.
+
+## Team Members
+- Álvarez Tomás
+- Gluck Matías
+- Massi Franco
+- Medina Tobias
+
+## Submission Date
+Tuesday, 24th September 2024
+
+## Technologies Used
+
+The technology stack used for the backend includes:
+
+- **Java Spring Boot**: Framework for developing the REST API, using a microservice-based architecture.
+- **JPA (Java Persistence API)**: Used for object-relational mapping and interaction with the relational database.
+- **CRUD Repository**: To facilitate Create, Read, Update, Delete operations in the database.
+- **JWT (JSON Web Token)**: Implemented for secure user authentication and authorization, protecting access routes to the API.
+- **MySQL**: Relational database used to store structured data on products, users, and purchases.
+
+**Frontend Repository:** https://github.com/17sTomy/fe-apps-int
+
+## Requirements
+
+The application fulfills the following use cases:
+
+### User Management:
+- **User registration**: Allows users to register by providing username, email, password, birth date, first name, and last name.
+- **Login**: Users can authenticate using their email or username and password, receiving a JWT to access the system.
+- **User Roles**: Administrators have special permissions to manage products and access a dedicated section. Regular users have limited access to basic features, such as buying products and leaving reviews.
+
+### Product Catalog:
+- **View products**: Authenticated users can access the home page, which displays a list of featured products, products by category, and products recently viewed by the user.
+- **Product details**: Users can view detailed information on each product, including an enlarged image, price, available stock, and additional details. If the product is out of stock, the user will be notified and unable to add it to the cart. Users can also add products to their favorites list.
+
+### Shopping Cart:
+- **Manage cart**: Users can add products to the cart, empty it, or remove products. During checkout, the total cost of products will be calculated, and stock availability will be validated. If no stock is available, the user will be notified.
+- **Stock deduction**: After a successful checkout, the stock for the purchased products will be deducted.
+
+### My Profile:
+- **My Profile section**: Users can access the "My Profile" section to view their personal information and past successful transactions.
+
+## Additional Implemented Use Cases:
+Besides the required features, the following additional functionalities were implemented:
+
+- **Product Recommendation Engine**: Based on genre, decade, and director of products (movies), as well as the user's favorite products.
+- **Admin Requests**: An additional module where administrators can manage specific requests.
+- **Reviews Section**: Users can leave reviews and rate products they have purchased.
+- **Email Verification on Registration**: A system that sends email verification to new users during registration, ensuring the authenticity of accounts.
+- **Email Receipt After Purchase**: The system automatically sends a purchase receipt to the user after a successful transaction, including details of the purchased products and total amount.
+
+## Installation and Usage
+
+1. Clone this repository.
+2. Configure database credentials in the `application.properties` file.
+3. Run the application using the command:
+    ```
+    mvn spring-boot:run
+    ```
+4. Access the API at `http://localhost:8080/`.
+
+## Swagger
+Can be accessed at the following link: http://localhost:8080/swagger-ui/index.html
+
+## Contributions
+This project was developed for the **Interactive Applications** course as part of the **Computer Engineering** degree.
+
+---
+
+
+# Aplicación Web de E-Commerce (README en español 🇦🇷)
 
 ![](Imagenes/LogoUADE.svg)
 
