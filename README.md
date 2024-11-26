@@ -53,6 +53,23 @@ Besides the required features, the following additional functionalities were imp
 - **Reviews Section**: Users can leave reviews and rate products they have purchased.
 - **Email Verification on Registration**: A system that sends email verification to new users during registration, ensuring the authenticity of accounts.
 - **Email Receipt After Purchase**: The system automatically sends a purchase receipt to the user after a successful transaction, including details of the purchased products and total amount.
+
+## Installation and Usage
+
+1. Clone this repository.
+2. Configure database credentials in the `application.properties` file.
+3. Run the application using the command:
+    ```
+    mvn spring-boot:run
+    ```
+4. Access the API at `http://localhost:8080/`.
+
+## Swagger
+Can be accessed at the following link: http://localhost:8080/swagger-ui/index.html
+
+## Contributions
+This project was developed for the **Interactive Applications** course as part of the **Computer Engineering** degree.
+
 ---
 
 
