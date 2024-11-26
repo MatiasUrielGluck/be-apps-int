@@ -73,7 +73,7 @@ This project was developed for the **Interactive Applications** course as part o
 ---
 
 
-# E-Commerce Web Application - Backend
+# Aplicación Web de E-Commerce (README en español 🇦🇷)
 
 ![](Imagenes/LogoUADE.svg)
 
