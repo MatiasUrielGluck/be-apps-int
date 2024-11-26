@@ -42,9 +42,8 @@ The application fulfills the following use cases:
 - **Manage cart**: Users can add products to the cart, empty it, or remove products. During checkout, the total cost of products will be calculated, and stock availability will be validated. If no stock is available, the user will be notified.
 - **Stock deduction**: After a successful checkout, the stock for the purchased products will be deducted.
 
-
-
-
+### My Profile:
+- **My Profile section**: Users can access the "My Profile" section to view their personal information and past successful transactions.
 
 ---
 
