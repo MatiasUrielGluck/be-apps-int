@@ -38,6 +38,13 @@ The application fulfills the following use cases:
 - **View products**: Authenticated users can access the home page, which displays a list of featured products, products by category, and products recently viewed by the user.
 - **Product details**: Users can view detailed information on each product, including an enlarged image, price, available stock, and additional details. If the product is out of stock, the user will be notified and unable to add it to the cart. Users can also add products to their favorites list.
 
+### Shopping Cart:
+- **Manage cart**: Users can add products to the cart, empty it, or remove products. During checkout, the total cost of products will be calculated, and stock availability will be validated. If no stock is available, the user will be notified.
+- **Stock deduction**: After a successful checkout, the stock for the purchased products will be deducted.
+
+
+
+
 
 ---
 
