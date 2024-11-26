@@ -34,6 +34,10 @@ The application fulfills the following use cases:
 - **Login**: Users can authenticate using their email or username and password, receiving a JWT to access the system.
 - **User Roles**: Administrators have special permissions to manage products and access a dedicated section. Regular users have limited access to basic features, such as buying products and leaving reviews.
 
+### Product Catalog:
+- **View products**: Authenticated users can access the home page, which displays a list of featured products, products by category, and products recently viewed by the user.
+- **Product details**: Users can view detailed information on each product, including an enlarged image, price, available stock, and additional details. If the product is out of stock, the user will be notified and unable to add it to the cart. Users can also add products to their favorites list.
+
 
 ---
 
