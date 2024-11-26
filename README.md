@@ -10,6 +10,13 @@ This project corresponds to the first submission of the Obligatory Practical Wor
 - Massi Franco
 - Medina Tobias
 
+## Submission Date
+Tuesday, 24th September 2024
+
+## Technologies Used
+
+The technology stack used for the backend includes:
+
 ---
 
 
