@@ -45,6 +45,14 @@ The application fulfills the following use cases:
 ### My Profile:
 - **My Profile section**: Users can access the "My Profile" section to view their personal information and past successful transactions.
 
+## Additional Implemented Use Cases:
+Besides the required features, the following additional functionalities were implemented:
+
+- **Product Recommendation Engine**: Based on genre, decade, and director of products (movies), as well as the user's favorite products.
+- **Admin Requests**: An additional module where administrators can manage specific requests.
+- **Reviews Section**: Users can leave reviews and rate products they have purchased.
+- **Email Verification on Registration**: A system that sends email verification to new users during registration, ensuring the authenticity of accounts.
+- **Email Receipt After Purchase**: The system automatically sends a purchase receipt to the user after a successful transaction, including details of the purchased products and total amount.
 ---
 
 
