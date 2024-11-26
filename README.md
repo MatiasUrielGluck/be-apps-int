@@ -2,7 +2,13 @@
 
 ![](Imagenes/LogoUADE.svg)
 
+This project corresponds to the first submission of the Obligatory Practical Work (TPO) for the course **Interactive Applications** in the second semester of 2024, developed as part of the **Computer Engineering** degree at UADE. It is the development of the backend for an e-commerce application, implemented using **Java Spring Boot**. The application aims to meet the academic requirements for the course, so it does not respond to any real commercial need but is set in an academic context.
 
+## Team Members
+- Álvarez Tomás
+- Gluck Matías
+- Massi Franco
+- Medina Tobias
 
 ---
 
