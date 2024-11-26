@@ -29,6 +29,12 @@ The technology stack used for the backend includes:
 
 The application fulfills the following use cases:
 
+### User Management:
+- **User registration**: Allows users to register by providing username, email, password, birth date, first name, and last name.
+- **Login**: Users can authenticate using their email or username and password, receiving a JWT to access the system.
+- **User Roles**: Administrators have special permissions to manage products and access a dedicated section. Regular users have limited access to basic features, such as buying products and leaving reviews.
+
+
 ---
 
 
